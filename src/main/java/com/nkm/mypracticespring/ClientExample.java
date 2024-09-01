@@ -27,12 +27,6 @@ public class ClientExample {
     }
 
     public static Properties readConfig(final String configFile) throws IOException {
-        // reads the client configuration from client.properties
-        // and returns it as a Properties object
-//        if (!Files.exists(Paths.get(configFile))) {
-//            throw new IOException(configFile + " not found.");
-//        }
-
         final Properties config = new Properties();
         try (InputStream inputStream = ClassLoader.getSystemResourceAsStream("client.properties")) {
             config.load(inputStream);
