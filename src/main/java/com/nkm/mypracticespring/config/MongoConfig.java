@@ -18,11 +18,9 @@ public class MongoConfig {
         String host = "localhost";
         String database = "e-commerce";
         String conString = "mongodb://" + username + ":" + password + "@" + host + ":" + port + "/" + database + "?authSource=admin"; // + "/?authSource=admin"
-
         ConnectionString connectionString = new ConnectionString(conString);
-
-
         MongoDatabaseFactory mongoDatabaseFactory = new SimpleMongoClientDatabaseFactory(connectionString);
+
         return new MongoTemplate(mongoDatabaseFactory);
 
 //        MongoCredential credential = MongoCredential.createCredential(username, database, password.toCharArray());

@@ -1,6 +1,16 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: my-practice-spring
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: admin
+      database: e-commerce
+      host: localhost
+      port: 27017
 logging:
   config: classpath:log4j2.xml
 server:

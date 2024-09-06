@@ -10,4 +10,14 @@ public class AccessServiceImpl implements IAccessService {
     public void signUp(String name, String email, String password) {
 
     }
+
+    @Override
+    public void login(String email, String password, String refreshToken) {
+
+    }
+
+    @Override
+    public void handlerRefreshToken(String refreshToken, String keystore, String password) {
+
+    }
 }

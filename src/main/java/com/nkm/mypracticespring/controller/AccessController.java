@@ -1,5 +1,8 @@
 package com.nkm.mypracticespring.controller;
 
+import com.nkm.mypracticespring.common.context.RestfulCtx;
+import com.nkm.mypracticespring.dto.ResponseDto;
+import com.nkm.mypracticespring.enums.MessageEnum;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccessController {
 
     @PostMapping("/shop/signup")
-    public Object hihi() {
-
-        return "ok";
+    public ResponseDto<?> hihi() {
+        System.out.println("ok");
+        return new ResponseDto<>(RestfulCtx.getRequestId(), MessageEnum.SUCCESS);
     }
 
 }
