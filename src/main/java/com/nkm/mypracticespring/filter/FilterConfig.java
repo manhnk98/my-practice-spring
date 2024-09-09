@@ -12,11 +12,11 @@ public class FilterConfig implements WebMvcConfigurer {
     private RestfulRequestFilter restfulRequestFilter;
 
     @Autowired
-    private AuthInterceptor authInterceptor;
+    private AuthenticationInterceptor authenticationInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(restfulRequestFilter).addPathPatterns("/v1/api/**").order(2);
-        registry.addInterceptor(authInterceptor).addPathPatterns("/v1/api/**").order(1);
+        registry.addInterceptor(authenticationInterceptor).addPathPatterns("/v1/api/**").order(1);
     }
 }
