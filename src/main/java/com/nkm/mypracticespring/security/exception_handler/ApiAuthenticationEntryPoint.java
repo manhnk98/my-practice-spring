@@ -11,6 +11,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Log4j2
 @Component
@@ -23,6 +24,6 @@ public class ApiAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-//        new ObjectMapper().writeValue(response.getOutputStream(), new ErrorResponse("Unauthorized", 401));
+        new ObjectMapper().writeValue(response.getOutputStream(), Collections.singletonMap("msg", "Unauthorized"));
     }
 }

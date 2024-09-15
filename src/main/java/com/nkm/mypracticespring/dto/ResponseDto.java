@@ -25,4 +25,12 @@ public class ResponseDto<T> {
         this.data = data;
     }
 
+    public ResponseDto(T data) {
+        MessageEnum msg = MessageEnum.SUCCESS;
+        this.status = "success";
+        this.message = msg.getMessage();
+        this.code = msg.getCode();
+        this.data = data;
+    }
+
 }
