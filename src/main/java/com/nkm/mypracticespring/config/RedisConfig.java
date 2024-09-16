@@ -2,12 +2,14 @@ package com.nkm.mypracticespring.config;
 
 import com.nkm.mypracticespring.listener.RedisTestChannelSubscriber;
 import com.nkm.mypracticespring.listener.RedisTestPatternSubscriber;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.PatternTopic;
@@ -23,6 +25,16 @@ public class RedisConfig {
         configuration.setPort(6379);
         configuration.setPassword("admin");
         configuration.setDatabase(0);
+
+        // idle: số lượng kết nối nhàn rỗi
+        GenericObjectPoolConfig<?> poolConfig = new GenericObjectPoolConfig<>();
+        poolConfig.setMaxIdle(5);
+        poolConfig.setMaxTotal(10);
+        poolConfig.setMinIdle(1);
+
+        LettucePoolingClientConfiguration lettucePoolConfig = LettucePoolingClientConfiguration.builder()
+                .poolConfig(poolConfig)
+                .build();
 
 //        RedisProperties redisProperties = new RedisProperties();
 //        redisProperties.setDatabase(Integer.parseInt(System.getenv("REDIS_DB")));
@@ -50,7 +62,7 @@ public class RedisConfig {
 //            configuration.addSentinel(rdNode);
 //        }
 
-        return new LettuceConnectionFactory(configuration);
+        return new LettuceConnectionFactory(configuration, lettucePoolConfig);
     }
 
     @Autowired
