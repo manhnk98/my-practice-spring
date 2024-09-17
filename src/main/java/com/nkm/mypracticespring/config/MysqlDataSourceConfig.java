@@ -21,7 +21,8 @@ import java.util.Map;
 @Configuration
 @EnableJpaRepositories(
         entityManagerFactoryRef = "mysqlEntityManagerFactoryBean",
-        basePackages = "com.nkm.mypracticespring.test.mysql"
+        basePackages = "com.nkm.mypracticespring.test.mysql",
+        transactionManagerRef = "mysqlTransactionManager"
 )
 public class MysqlDataSourceConfig {
 
@@ -45,7 +46,7 @@ public class MysqlDataSourceConfig {
     @Bean
     public EntityManagerFactoryBuilder mysqlEntityManagerFactoryBuilder() {
         AbstractJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setShowSql(true);
+        vendorAdapter.setShowSql(false);
         vendorAdapter.setGenerateDdl(true);
 
         Map<String, String> jpaProperties = new HashMap<>();
@@ -56,6 +57,7 @@ public class MysqlDataSourceConfig {
     }
 
     @Bean
+//    @Primary
     public LocalContainerEntityManagerFactoryBean mysqlEntityManagerFactoryBean(
             @Qualifier("mysqlDataSource") DataSource mysqlDataSource) {
 
@@ -65,8 +67,9 @@ public class MysqlDataSourceConfig {
                 .build();
     }
 
-    @Bean
-    public PlatformTransactionManager transactionManager(
+    @Bean(name = "mysqlTransactionManager")
+//    @Primary
+    public PlatformTransactionManager mysqlTransactionManager(
             @Qualifier("mysqlEntityManagerFactoryBean") LocalContainerEntityManagerFactoryBean mysqlEntityManagerFactoryBean) {
         return new JpaTransactionManager(mysqlEntityManagerFactoryBean.getObject());
     }

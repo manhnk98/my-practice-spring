@@ -21,7 +21,8 @@ import java.util.Map;
 @Configuration
 @EnableJpaRepositories(
         entityManagerFactoryRef = "postgresEntityManagerFactoryBean",
-        basePackages = "com.nkm.mypracticespring.test.postgres"
+        basePackages = "com.nkm.mypracticespring.test.postgres",
+        transactionManagerRef = "postgresTransactionManager"
 )
 public class PostgresDataSourceConfig {
 
@@ -45,7 +46,7 @@ public class PostgresDataSourceConfig {
     @Bean
     public EntityManagerFactoryBuilder postgresEntityManagerFactoryBuilder() {
         AbstractJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setShowSql(true);
+        vendorAdapter.setShowSql(false);
         vendorAdapter.setGenerateDdl(true);
 
         Map<String, String> jpaProperties = new HashMap<>();
@@ -56,7 +57,7 @@ public class PostgresDataSourceConfig {
     }
 
     @Bean
-    @Primary
+//    @Primary
     public LocalContainerEntityManagerFactoryBean postgresEntityManagerFactoryBean(
             @Qualifier("postgresDataSource") DataSource postgresDataSource) {
 
@@ -66,9 +67,9 @@ public class PostgresDataSourceConfig {
                 .build();
     }
 
-    @Bean(name = "transactionManager")
-    @Primary
-    public PlatformTransactionManager transactionManager(
+    @Bean(name = "postgresTransactionManager")
+//    @Primary
+    public PlatformTransactionManager postgresTransactionManager(
             @Qualifier("postgresEntityManagerFactoryBean") LocalContainerEntityManagerFactoryBean postgresEntityManagerFactoryBean) {
         return new JpaTransactionManager(postgresEntityManagerFactoryBean.getObject());
     }
