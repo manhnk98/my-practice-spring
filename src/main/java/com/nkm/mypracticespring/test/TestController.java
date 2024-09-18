@@ -1,7 +1,6 @@
 package com.nkm.mypracticespring.test;
 
 import com.nkm.mypracticespring.dto.ResponseDto;
-import com.nkm.mypracticespring.test.mysql.MysqlUserEntity;
 import com.nkm.mypracticespring.test.mysql.MysqlUserRepository;
 import com.nkm.mypracticespring.test.postgres.PostgresUserEntity;
 import com.nkm.mypracticespring.test.postgres.PostgresUserRepository;
@@ -34,61 +33,114 @@ public class TestController {
     @PostMapping("/init-data")
     public ResponseDto<?> initData() {
         BlockingQueue<Integer> queueIndex = new LinkedBlockingQueue<>();
-        for (int i = 0; i < 10_000; i++) {
+        for (int i = 0; i < 1_000_000; i++) {
             queueIndex.add(i);
         }
 
         System.out.println("Init done queueIndex");
 
-        int sizeOfProducer = 3;
-        int sizeOfConsumer = 3;
+        int sizeOfProducer = 6;
+        int sizeOfConsumer = 6;
 
         ExecutorService executorProducer = Executors.newFixedThreadPool(sizeOfProducer);
         ExecutorService executorConsumer = Executors.newFixedThreadPool(sizeOfConsumer);
         BlockingQueue<PostgresUserEntity> queueDataPostgres = new LinkedBlockingQueue<>();
-        BlockingQueue<MysqlUserEntity> queueDataMysql = new LinkedBlockingQueue<>();
+//        BlockingQueue<MysqlUserEntity> queueDataMysql = new LinkedBlockingQueue<>();
 
-        while (!queueIndex.isEmpty()) {
-            Integer index = queueIndex.poll(500, TimeUnit.MILLISECONDS);
-            if (index == null) {
-                break;
-            }
+        long timeStart = System.currentTimeMillis();
 
+        String password = this.generateString(500);
+        String text = this.generateString(10000);
+
+        for (int i = 0; i < sizeOfProducer; i++) {
             executorProducer.submit(() -> {
-                try {
-                    String password = this.generateString(500);
-                    String text = this.generateString(10000);
+                while (!queueIndex.isEmpty()) {
+                    Integer index;
+                    try {
+                        index = queueIndex.poll(1, TimeUnit.SECONDS);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                    PostgresUserEntity postgresUserEntity = new PostgresUserEntity();
-                    postgresUserEntity.setFullName("Nguyen Van Manh Postgresql" + index);
-                    postgresUserEntity.setUsername("ManhNV_" + index);
-                    postgresUserEntity.setPassword(password);
-                    postgresUserEntity.setEmail("manhnv_" + index + "@gmail.com");
-                    postgresUserEntity.setTestText(text);
-                    queueDataPostgres.add(postgresUserEntity);
+                    if (index != null) {
+                        try {
+                            PostgresUserEntity postgresUserEntity = new PostgresUserEntity();
+                            postgresUserEntity.setFullName("Nguyen Van Manh Postgresql" + index);
+                            postgresUserEntity.setUsername("ManhNV_" + index);
+                            postgresUserEntity.setPassword(password);
+                            postgresUserEntity.setEmail("manhnv_" + index + "@gmail.com");
+                            postgresUserEntity.setTestText(text);
+                            queueDataPostgres.add(postgresUserEntity);
 
-                    MysqlUserEntity mysqlUserEntity = new MysqlUserEntity();
-                    mysqlUserEntity.setFullName("Nguyen Van Manh MYSQL" + index);
-                    mysqlUserEntity.setUsername("ManhNV_" + index);
-                    mysqlUserEntity.setPassword(password);
-                    mysqlUserEntity.setEmail("manhnv_" + index + "@gmail.com");
-                    mysqlUserEntity.setTestText(text);
-                    queueDataMysql.add(mysqlUserEntity);
-
-                } catch (Exception e) {
-                    System.out.println("ERROR index: " + index);
+//                        MysqlUserEntity mysqlUserEntity = new MysqlUserEntity();
+//                        mysqlUserEntity.setFullName("Nguyen Van Manh MYSQL" + index);
+//                        mysqlUserEntity.setUsername("ManhNV_" + index);
+//                        mysqlUserEntity.setPassword(password);
+//                        mysqlUserEntity.setEmail("manhnv_" + index + "@gmail.com");
+//                        mysqlUserEntity.setTestText(text);
+//                        queueDataMysql.add(mysqlUserEntity);
+                        } catch (Exception e) {
+                            System.out.println("ERROR index: " + index);
+                        }
+                    }
                 }
-            });
-        }
-        executorProducer.shutdown();
-        executorProducer.awaitTermination(1, TimeUnit.HOURS);
 
-        while (!queueDataMysql.isEmpty() || !queueDataPostgres.isEmpty()) {
-            executorConsumer.submit(new HandlerUserMysql(mysqlUserRepository, queueDataMysql));
+            });
+
+        }
+
+//        while (!queueIndex.isEmpty()) {
+//            executorProducer.submit(() -> {
+//                Integer index;
+//                try {
+//                    index = queueIndex.poll(1, TimeUnit.SECONDS);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//                if (index != null) {
+//                    try {
+//                        PostgresUserEntity postgresUserEntity = new PostgresUserEntity();
+//                        postgresUserEntity.setFullName("Nguyen Van Manh Postgresql" + index);
+//                        postgresUserEntity.setUsername("ManhNV_" + index);
+//                        postgresUserEntity.setPassword(password);
+//                        postgresUserEntity.setEmail("manhnv_" + index + "@gmail.com");
+//                        postgresUserEntity.setTestText(text);
+//                        queueDataPostgres.add(postgresUserEntity);
+//
+////                        MysqlUserEntity mysqlUserEntity = new MysqlUserEntity();
+////                        mysqlUserEntity.setFullName("Nguyen Van Manh MYSQL" + index);
+////                        mysqlUserEntity.setUsername("ManhNV_" + index);
+////                        mysqlUserEntity.setPassword(password);
+////                        mysqlUserEntity.setEmail("manhnv_" + index + "@gmail.com");
+////                        mysqlUserEntity.setTestText(text);
+////                        queueDataMysql.add(mysqlUserEntity);
+//                    } catch (Exception e) {
+//                        System.out.println("ERROR index: " + index);
+//                    }
+//                }
+//            });
+//        }
+        executorProducer.shutdown();
+        boolean terminateProducer = executorProducer.awaitTermination(1, TimeUnit.HOURS);
+        if (terminateProducer) {
+            System.out.println("terminateProducer");
+        }
+
+        for (int i = 0; i < sizeOfConsumer; i++) {
+//            executorConsumer.submit(new HandlerUserMysql(mysqlUserRepository, queueDataMysql));
             executorConsumer.submit(new HandlerUserPostgres(postgresUserRepository, queueDataPostgres));
         }
+
         executorConsumer.shutdown();
-        executorConsumer.awaitTermination(1, TimeUnit.HOURS);
+        boolean terminateConsumer = executorConsumer.awaitTermination(1, TimeUnit.HOURS);
+        if (terminateConsumer) {
+            System.out.println("terminateConsumer");
+        }
+
+        long timeEnd = System.currentTimeMillis();
+
+        System.out.println("Time handle : " + TimeUnit.MILLISECONDS.toSeconds(timeEnd - timeStart) + " seconds");
 
         return new ResponseDto<>("ok");
     }

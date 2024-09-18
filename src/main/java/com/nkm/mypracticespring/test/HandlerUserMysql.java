@@ -30,7 +30,7 @@ public class HandlerUserMysql implements Runnable {
                 System.out.println("Insert Mysql " + listUser.getLast().getUsername());
                 listUser = new ArrayList<>();
             } else {
-                MysqlUserEntity user = queueUserMysql.poll(500, TimeUnit.MILLISECONDS);
+                MysqlUserEntity user = queueUserMysql.poll(1, TimeUnit.SECONDS);
                 if (user != null) {
                     listUser.add(user);
                 } else {

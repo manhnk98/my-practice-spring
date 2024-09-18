@@ -31,7 +31,7 @@ public class HandlerUserPostgres implements Runnable {
                 System.out.println("Insert Postgresql " + listUser.getLast().getUsername());
                 listUser = new ArrayList<>();
             } else {
-                PostgresUserEntity user = queueUser.poll(500, TimeUnit.MILLISECONDS);
+                PostgresUserEntity user = queueUser.poll(1, TimeUnit.SECONDS);
                 if (user != null) {
                     listUser.add(user);
                 } else {
