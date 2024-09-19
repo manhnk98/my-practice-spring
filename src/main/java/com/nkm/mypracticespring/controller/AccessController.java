@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccessController {
 
     @PostMapping("/shop/signup")
-    public ResponseDto<?> hihi() {
+    public ResponseDto<?> signup() {
+        System.out.println("ok");
+        return new ResponseDto<>(RestfulCtx.getRequestId(), MessageEnum.SUCCESS);
+    }
+
+    @PostMapping("/signup/login")
+    public ResponseDto<?> login() {
         System.out.println("ok");
         return new ResponseDto<>(RestfulCtx.getRequestId(), MessageEnum.SUCCESS);
     }

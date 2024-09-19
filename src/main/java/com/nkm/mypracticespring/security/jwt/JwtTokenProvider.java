@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class JwtTokenProvider {
 
-    private static final String JWT_SECRET = "manhnk1998manhnk1998manhnk1998manhnk1998manhnk1998manhnk1998manhnk1998manhnk1998-5pAq6zRyX8bC3dV2wS7gN1mK9jF0hL4tUoP6iBvE3nG8xZaQrY7cW2fA";
+    private static final String JWT_SECRET = "5pAq6zRyX8bC3dV2wS7gN1mK9jF0hL4tUoP6iBvE3nG8xZaQrY7cW2fA";
     private static final long JWT_EXPIRE_TIME = 24 * 60 * 60 * 1000L;
     private static final String USERNAME_KEY = "username";
 
@@ -23,7 +23,6 @@ public class JwtTokenProvider {
         Date expired = new Date(now.getTime() + JWT_EXPIRE_TIME);
         Map<String, Object> claims = new HashMap<>();
         claims.put(USERNAME_KEY, username);
-        claims.put("ahihi-claim", username);
         return Jwts.builder()
                 .subject(username)
                 .claims(claims)
