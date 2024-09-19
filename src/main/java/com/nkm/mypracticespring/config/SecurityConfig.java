@@ -22,9 +22,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/health-check", "/v1/api/**").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/health-check1", "/v1/api/**").permitAll()
+                        .anyRequest().authenticated()
                 )
+                .exceptionHandling(ex -> {})
                 .build();
     }
 

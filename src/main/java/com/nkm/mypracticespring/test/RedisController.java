@@ -1,4 +1,4 @@
-package com.nkm.mypracticespring.controller.test;
+package com.nkm.mypracticespring.test;
 
 import com.nkm.mypracticespring.dto.ResponseDto;
 import com.nkm.mypracticespring.dto.test.MessageDto;

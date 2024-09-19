@@ -40,7 +40,7 @@ public class TestController {
         System.out.println("Init done queueIndex");
 
         int sizeOfProducer = 6;
-        int sizeOfConsumer = 6;
+        int sizeOfConsumer = 4;
 
         ExecutorService executorProducer = Executors.newFixedThreadPool(sizeOfProducer);
         ExecutorService executorConsumer = Executors.newFixedThreadPool(sizeOfConsumer);
@@ -89,38 +89,6 @@ public class TestController {
 
         }
 
-//        while (!queueIndex.isEmpty()) {
-//            executorProducer.submit(() -> {
-//                Integer index;
-//                try {
-//                    index = queueIndex.poll(1, TimeUnit.SECONDS);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//                if (index != null) {
-//                    try {
-//                        PostgresUserEntity postgresUserEntity = new PostgresUserEntity();
-//                        postgresUserEntity.setFullName("Nguyen Van Manh Postgresql" + index);
-//                        postgresUserEntity.setUsername("ManhNV_" + index);
-//                        postgresUserEntity.setPassword(password);
-//                        postgresUserEntity.setEmail("manhnv_" + index + "@gmail.com");
-//                        postgresUserEntity.setTestText(text);
-//                        queueDataPostgres.add(postgresUserEntity);
-//
-////                        MysqlUserEntity mysqlUserEntity = new MysqlUserEntity();
-////                        mysqlUserEntity.setFullName("Nguyen Van Manh MYSQL" + index);
-////                        mysqlUserEntity.setUsername("ManhNV_" + index);
-////                        mysqlUserEntity.setPassword(password);
-////                        mysqlUserEntity.setEmail("manhnv_" + index + "@gmail.com");
-////                        mysqlUserEntity.setTestText(text);
-////                        queueDataMysql.add(mysqlUserEntity);
-//                    } catch (Exception e) {
-//                        System.out.println("ERROR index: " + index);
-//                    }
-//                }
-//            });
-//        }
         executorProducer.shutdown();
         boolean terminateProducer = executorProducer.awaitTermination(1, TimeUnit.HOURS);
         if (terminateProducer) {
@@ -139,9 +107,7 @@ public class TestController {
         }
 
         long timeEnd = System.currentTimeMillis();
-
         System.out.println("Time handle : " + TimeUnit.MILLISECONDS.toSeconds(timeEnd - timeStart) + " seconds");
-
         return new ResponseDto<>("ok");
     }
 
