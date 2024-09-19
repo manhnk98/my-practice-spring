@@ -30,15 +30,15 @@ public class MysqlDataSourceConfig {
     public DataSource mysqlDataSource() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3306/test_database");
-        hikariConfig.setUsername("root");
-        hikariConfig.setPassword("admin");
+        hikariConfig.setJdbcUrl(EnvConfig.DB_MYSQL_URL);
+        hikariConfig.setUsername(EnvConfig.DB_MYSQL_USERNAME);
+        hikariConfig.setPassword(EnvConfig.DB_MYSQL_PASSWORD);
 
         hikariConfig.setConnectionTestQuery("SELECT 1");
-        hikariConfig.setPoolName("mysql::springHikariCP");
-        hikariConfig.setConnectionTimeout(100000);
-        hikariConfig.setMaximumPoolSize(10);
-        hikariConfig.setMinimumIdle(2);
+        hikariConfig.setPoolName("MySQL::springHikariCP");
+        hikariConfig.setConnectionTimeout(EnvConfig.DB_MYSQL_CONNECTION_TIMEOUT);
+        hikariConfig.setMaximumPoolSize(EnvConfig.DB_MYSQL_MAX_POOL_SIZE);
+        hikariConfig.setMinimumIdle(EnvConfig.DB_MYSQL_MIN_IDLE);
 
         return new HikariDataSource(hikariConfig);
     }

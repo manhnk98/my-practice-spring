@@ -30,15 +30,15 @@ public class PostgresDataSourceConfig {
     public DataSource postgresDataSource() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName("org.postgresql.Driver");
-        hikariConfig.setJdbcUrl("jdbc:postgresql://localhost:5432/test_database");
-        hikariConfig.setUsername("postgres");
-        hikariConfig.setPassword("admin");
+        hikariConfig.setJdbcUrl(EnvConfig.DB_POSTRGESQL_URL);
+        hikariConfig.setUsername(EnvConfig.DB_POSTRGESQL_USERNAME);
+        hikariConfig.setPassword(EnvConfig.DB_POSTRGESQL_PASSWORD);
 
         hikariConfig.setConnectionTestQuery("SELECT 1");
-        hikariConfig.setPoolName("postgres::springHikariCP");
-        hikariConfig.setConnectionTimeout(100000);
-        hikariConfig.setMaximumPoolSize(10);
-        hikariConfig.setMinimumIdle(2);
+        hikariConfig.setPoolName("Postgres::springHikariCP");
+        hikariConfig.setConnectionTimeout(EnvConfig.DB_POSTRGESQL_CONNECTION_TIMEOUT);
+        hikariConfig.setMaximumPoolSize(EnvConfig.DB_POSTRGESQL_MAX_POOL_SIZE);
+        hikariConfig.setMinimumIdle(EnvConfig.DB_POSTRGESQL_MIN_IDLE);
 
         return new HikariDataSource(hikariConfig);
     }

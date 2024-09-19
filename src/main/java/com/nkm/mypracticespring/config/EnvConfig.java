@@ -6,29 +6,34 @@ import java.util.Optional;
 
 @Log4j2
 public class EnvConfig {
-    public static final Long DB_CONNECTION_TIMEOUT;
-    public static final Integer DB_MAX_POOL_SIZE;
-    public static final Integer DB_MIN_IDLE;
-    public static final String DB_PASSWORD;
-    public static final String DB_DBAAS_URL;
-    public static final String DB_AUTO_SCALE_URL;
-    public static final String DB_USERNAME;
+    public static final Long DB_POSTRGESQL_CONNECTION_TIMEOUT;
+    public static final Integer DB_POSTRGESQL_MAX_POOL_SIZE;
+    public static final Integer DB_POSTRGESQL_MIN_IDLE;
+    public static final String DB_POSTRGESQL_URL;
+    public static final String DB_POSTRGESQL_PASSWORD;
+    public static final String DB_POSTRGESQL_USERNAME;
 
-    // validate
-    public static final Integer BK_MIN_KEEP_RECORD;
-    public static final Integer BK_MAX_KEEP_RECORD;
+    public static final Long DB_MYSQL_CONNECTION_TIMEOUT;
+    public static final Integer DB_MYSQL_MAX_POOL_SIZE;
+    public static final Integer DB_MYSQL_MIN_IDLE;
+    public static final String DB_MYSQL_URL;
+    public static final String DB_MYSQL_PASSWORD;
+    public static final String DB_MYSQL_USERNAME;
 
     static {
-        DB_CONNECTION_TIMEOUT = Long.valueOf(getValue("DB_CONNECTION_TIMEOUT", "100000"));
-        DB_MAX_POOL_SIZE = Integer.valueOf(getValue("DB_MAX_POOL_SIZE", "30"));
-        DB_MIN_IDLE = Integer.valueOf(getValue("DB_MIN_IDLE", "15"));
-        DB_DBAAS_URL = getValue("DB_DBAAS_URL");
-        DB_PASSWORD = getValue("DB_PASSWORD");
-        DB_USERNAME = getValue("DB_USERNAME");
-        DB_AUTO_SCALE_URL = getValue("DB_AUTO_SCALE_URL");
+        DB_POSTRGESQL_CONNECTION_TIMEOUT = Long.valueOf(getValue("DB_POSTRGESQL_CONNECTION_TIMEOUT", "100000"));
+        DB_POSTRGESQL_MAX_POOL_SIZE = Integer.valueOf(getValue("DB_POSTRGESQL_MAX_POOL_SIZE", "30"));
+        DB_POSTRGESQL_MIN_IDLE = Integer.valueOf(getValue("DB_POSTRGESQL_MIN_IDLE", "15"));
+        DB_POSTRGESQL_URL = getValue("DB_POSTRGESQL_URL", "jdbc:postgresql://localhost:5432/test_database");
+        DB_POSTRGESQL_USERNAME = getValue("DB_POSTRGESQL_USERNAME", "postgres");
+        DB_POSTRGESQL_PASSWORD = getValue("DB_POSTRGESQL_PASSWORD", "admin");
 
-        BK_MIN_KEEP_RECORD = Integer.valueOf(getValue("BK_MIN_KEEP_RECORD", "1"));
-        BK_MAX_KEEP_RECORD = Integer.valueOf(getValue("BK_MAX_KEEP_RECORD", "30"));
+        DB_MYSQL_CONNECTION_TIMEOUT = Long.valueOf(getValue("DB_MYSQL_CONNECTION_TIMEOUT", "100000"));
+        DB_MYSQL_MAX_POOL_SIZE = Integer.valueOf(getValue("DB_MYSQL_MAX_POOL_SIZE", "30"));
+        DB_MYSQL_MIN_IDLE = Integer.valueOf(getValue("DB_MYSQL_MIN_IDLE", "15"));
+        DB_MYSQL_URL = getValue("DB_MYSQL_URL", "jdbc:mysql://localhost:3306/test_database");
+        DB_MYSQL_USERNAME = getValue("DB_MYSQL_USERNAME", "root");
+        DB_MYSQL_PASSWORD = getValue("DB_MYSQL_PASSWORD", "admin");
     }
 
     private static String getValue(String key, String defaultValue) {
