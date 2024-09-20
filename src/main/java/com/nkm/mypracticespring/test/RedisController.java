@@ -1,6 +1,6 @@
 package com.nkm.mypracticespring.test;
 
-import com.nkm.mypracticespring.dto.ResponseDto;
+import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.dto.test.MessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

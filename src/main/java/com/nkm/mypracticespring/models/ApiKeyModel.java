@@ -9,6 +9,8 @@ import java.util.List;
 @Document(collection = "api_keys")
 public class ApiKeyModel extends BaseModel {
 
+    private String key;
+
     private Boolean status;
 
     private List<String> permissions;

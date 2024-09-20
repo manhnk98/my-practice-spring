@@ -1,4 +1,4 @@
-package com.nkm.mypracticespring.exceptions;
+package com.nkm.mypracticespring.exceptions.handler;
 
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;

@@ -41,7 +41,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(request -> request
                 .requestMatchers("/health-check1", "/v1/api/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
         );
 
         http.exceptionHandling(exceptionHandling -> exceptionHandling

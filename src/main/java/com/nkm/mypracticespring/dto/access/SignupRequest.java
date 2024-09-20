@@ -6,17 +6,17 @@ import io.micrometer.common.util.StringUtils;
 import lombok.Data;
 
 @Data
-public class LoginRequest extends DataRequest {
+public class SignupRequest extends DataRequest {
 
-    private String email;
+    private String name;
 
     private String password;
 
-    private String refreshToken;
+    private String email;
 
     @Override
     public void validate() throws DataInvalidException {
-        if (StringUtils.isBlank(email) || email.length() < 8) {
+        if (StringUtils.isBlank(name) || name.length() < 8) {
             throw new DataInvalidException("Email invalid");
         }
 

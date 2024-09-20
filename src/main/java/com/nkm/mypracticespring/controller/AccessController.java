@@ -1,8 +1,9 @@
 package com.nkm.mypracticespring.controller;
 
 import com.nkm.mypracticespring.common.context.RestfulCtx;
-import com.nkm.mypracticespring.dto.ResponseDto;
-import com.nkm.mypracticespring.dto.SignupRequest;
+import com.nkm.mypracticespring.dto.access.LoginRequest;
+import com.nkm.mypracticespring.dto.common.ResponseDto;
+import com.nkm.mypracticespring.dto.access.SignupRequest;
 import com.nkm.mypracticespring.enums.MessageEnum;
 import com.nkm.mypracticespring.services.IAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,14 @@ public class AccessController {
 
     @PostMapping("/shop/signup")
     public ResponseDto<?> signup(@RequestBody SignupRequest signupReq) {
+        signupReq.validate();
         accessService.signUp(signupReq);
-        return new ResponseDto<>(RestfulCtx.getRequestId(), MessageEnum.SUCCESS);
+        return new ResponseDto<>(RestfulCtx.getRequestId());
     }
 
-    @PostMapping("/signup/login")
-    public ResponseDto<?> login() {
-        System.out.println("ok");
-        return new ResponseDto<>(RestfulCtx.getRequestId(), MessageEnum.SUCCESS);
+    @PostMapping("/shop/login")
+    public ResponseDto<?> login(@RequestBody LoginRequest loginReq) {
+        return new ResponseDto<>(accessService.login(loginReq));
     }
 
 }

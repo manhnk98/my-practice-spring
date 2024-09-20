@@ -1,6 +1,6 @@
 package com.nkm.mypracticespring.test;
 
-import com.nkm.mypracticespring.dto.ResponseDto;
+import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.test.mysql.MysqlUserRepository;
 import com.nkm.mypracticespring.test.postgres.PostgresUserEntity;
 import com.nkm.mypracticespring.test.postgres.PostgresUserRepository;

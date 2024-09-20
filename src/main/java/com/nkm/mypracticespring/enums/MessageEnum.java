@@ -7,7 +7,10 @@ import java.util.Arrays;
 @Getter
 public enum MessageEnum {
     SUCCESS("20001", "Success"),
-    ERR_INVALID_TOKEN("30001", "Token is invalid");
+
+    ERR_APPLICATION("30000", "Application error"),
+    ERR_INVALID_TOKEN("30001", "Token is invalid"),
+    ERR_INVALID_PARAM("30002", "Param invalid");
 
     private final String code;
     private final String message;

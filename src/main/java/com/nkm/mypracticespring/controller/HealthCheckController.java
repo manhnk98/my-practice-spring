@@ -1,6 +1,6 @@
 package com.nkm.mypracticespring.controller;
 
-import com.nkm.mypracticespring.dto.ResponseDto;
+import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.enums.MessageEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

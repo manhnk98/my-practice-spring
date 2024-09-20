@@ -20,6 +20,8 @@ public class EnvConfig {
     public static final String DB_MYSQL_PASSWORD;
     public static final String DB_MYSQL_USERNAME;
 
+    public static final String JWT_SECRET;
+
     static {
         DB_POSTRGESQL_CONNECTION_TIMEOUT = Long.valueOf(getValue("DB_POSTRGESQL_CONNECTION_TIMEOUT", "100000"));
         DB_POSTRGESQL_MAX_POOL_SIZE = Integer.valueOf(getValue("DB_POSTRGESQL_MAX_POOL_SIZE", "30"));
@@ -34,6 +36,8 @@ public class EnvConfig {
         DB_MYSQL_URL = getValue("DB_MYSQL_URL", "jdbc:mysql://localhost:3306/test_database");
         DB_MYSQL_USERNAME = getValue("DB_MYSQL_USERNAME", "root");
         DB_MYSQL_PASSWORD = getValue("DB_MYSQL_PASSWORD", "admin");
+
+        JWT_SECRET = getValue("JWT_SECRET", "5pAq6zRyX8bC3dV2wS7gN1mK9jF0hL4tUoP6iBvE3nG8xZaQrY7cW2fA");
     }
 
     private static String getValue(String key, String defaultValue) {
