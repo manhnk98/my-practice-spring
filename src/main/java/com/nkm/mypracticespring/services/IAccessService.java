@@ -1,10 +1,13 @@
 package com.nkm.mypracticespring.services;
 
+import com.nkm.mypracticespring.dto.SignupRequest;
+import com.nkm.mypracticespring.dto.access.LoginRequest;
+
 public interface IAccessService {
 
-    void signUp(String name, String email, String password);
+    void signUp(SignupRequest signupReq);
 
-    void login(String email, String password, String refreshToken);
+    void login(LoginRequest loginReq);
 
     void handlerRefreshToken(String refreshToken, String keystore, String password);
 }

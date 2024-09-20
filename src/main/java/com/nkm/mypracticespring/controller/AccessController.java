@@ -2,8 +2,12 @@ package com.nkm.mypracticespring.controller;
 
 import com.nkm.mypracticespring.common.context.RestfulCtx;
 import com.nkm.mypracticespring.dto.ResponseDto;
+import com.nkm.mypracticespring.dto.SignupRequest;
 import com.nkm.mypracticespring.enums.MessageEnum;
+import com.nkm.mypracticespring.services.IAccessService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/api")
 public class AccessController {
 
+    @Autowired
+    private IAccessService accessService;
+
     @PostMapping("/shop/signup")
-    public ResponseDto<?> signup() {
-        System.out.println("ok");
+    public ResponseDto<?> signup(@RequestBody SignupRequest signupReq) {
+        accessService.signUp(signupReq);
         return new ResponseDto<>(RestfulCtx.getRequestId(), MessageEnum.SUCCESS);
     }
 

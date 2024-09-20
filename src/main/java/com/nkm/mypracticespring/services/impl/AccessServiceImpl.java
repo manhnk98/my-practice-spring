@@ -1,5 +1,7 @@
 package com.nkm.mypracticespring.services.impl;
 
+import com.nkm.mypracticespring.dto.SignupRequest;
+import com.nkm.mypracticespring.dto.access.LoginRequest;
 import com.nkm.mypracticespring.dto.common.ErrorResponse;
 import com.nkm.mypracticespring.enums.RoleShop;
 import com.nkm.mypracticespring.exceptions.CommonException;
@@ -26,31 +28,33 @@ public class AccessServiceImpl implements IAccessService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void signUp(String name, String email, String password) {
-        Optional<ShopModel> shopInfo = shopRepository.findFirstByEmail(email);
+    public void signUp(SignupRequest signupReq) {
+        Optional<ShopModel> shopInfo = shopRepository.findFirstByEmail(signupReq.getEmail());
         if (shopInfo.isPresent()) {
             throw new CommonException(new ErrorResponse("Shop already registered", "EXISTED"));
         }
 
-        if (StringUtils.isBlank(password) || password.length() < 7) {
+        if (StringUtils.isBlank(signupReq.getPassword()) || signupReq.getPassword().length() < 7) {
             throw new CommonException(new ErrorResponse("Password should be at least 7 characters", "PASSWORD_INVALID"));
         }
 
-        String passwordHash = passwordEncoder.encode(password);
+        String passwordHash = passwordEncoder.encode(signupReq.getPassword());
 
         ShopModel newShop = new ShopModel();
-        newShop.setName(name);
-        newShop.setEmail(email);
+        newShop.setName(signupReq.getName());
+        newShop.setEmail(signupReq.getEmail());
         newShop.setPassword(passwordHash);
         newShop.setRoles(List.of(RoleShop.SHOP.name()));
         shopRepository.save(newShop);
 
-
     }
 
     @Override
-    public void login(String email, String password, String refreshToken) {
-
+    public void login(LoginRequest loginReq) {
+        Optional<ShopModel> shopInfo = shopRepository.findFirstByEmail(loginReq.getEmail());
+        if (shopInfo.isPresent()) {
+            throw new CommonException(new ErrorResponse("Shop already registered", "EXISTED"));
+        }
     }
 
     @Override
