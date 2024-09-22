@@ -1,8 +1,7 @@
-package com.nkm.mypracticespring.security.jwt;
+package com.nkm.mypracticespring.utils;
 
 import com.nkm.mypracticespring.common.Constant;
 import com.nkm.mypracticespring.config.EnvConfig;
-import com.nkm.mypracticespring.dto.access.ShopInfo;
 import com.nkm.mypracticespring.dto.jwt.CreateJwtDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -12,7 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JwtTokenProvider {
+public class JwtUtils {
 
     private static SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(EnvConfig.JWT_SECRET.getBytes());
@@ -22,8 +21,8 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expired = new Date(now.getTime() + expireTime);
         Map<String, Object> claims = new HashMap<>();
-        claims.put(Constant.PAYLOAD_USER_ID, info.getUserId());
-        claims.put(Constant.PAYLOAD_EMAIL, info.getEmail());
+        claims.put(Constant.PAYLOAD_USER_ID, info.userId());
+        claims.put(Constant.PAYLOAD_EMAIL, info.email());
         return Jwts.builder()
                 .subject("userInfo")
                 .claims(claims)
@@ -76,13 +75,13 @@ public class JwtTokenProvider {
         return false;
     }
 
-    public static void main(String[] args) {
-        String jwtToken = generateToken(new CreateJwtDto("manhnk", "nkm081198@gmail.com"), Constant.TOKEN_EXPIRE_TIME);
-        System.out.println("secretKey => " + getSecretKey().getAlgorithm());
-        System.out.println("jwt token => " + jwtToken);
-        System.out.println("validate token => " + validateToken(jwtToken));
-        System.out.println("username => " + getFromJwt(jwtToken, Constant.PAYLOAD_USER_ID));
-    }
+//    public static void main(String[] args) {
+//        String jwtToken = generateToken(new CreateJwtDto("manhnk", "nkm081198@gmail.com"), Constant.TOKEN_EXPIRE_TIME);
+//        System.out.println("secretKey => " + getSecretKey().getAlgorithm());
+//        System.out.println("jwt token => " + jwtToken);
+//        System.out.println("validate token => " + validateToken(jwtToken));
+//        System.out.println("username => " + getFromJwt(jwtToken, Constant.PAYLOAD_USER_ID));
+//    }
 
 }
 

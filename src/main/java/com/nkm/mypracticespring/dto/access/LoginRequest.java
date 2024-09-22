@@ -20,10 +20,6 @@ public class LoginRequest extends DataRequest {
             throw new DataInvalidException("Email invalid");
         }
 
-        if (StringUtils.isBlank(email) || email.length() < 8) {
-            throw new DataInvalidException("Email invalid");
-        }
-
         if (StringUtils.isBlank(password) || password.length() < 8) {
             throw new DataInvalidException("Password invalid");
         }

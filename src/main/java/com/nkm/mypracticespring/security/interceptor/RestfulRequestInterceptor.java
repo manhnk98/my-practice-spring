@@ -1,4 +1,4 @@
-package com.nkm.mypracticespring.security.filter;
+package com.nkm.mypracticespring.security.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
