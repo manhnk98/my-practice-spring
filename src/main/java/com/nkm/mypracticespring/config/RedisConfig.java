@@ -1,7 +1,7 @@
 package com.nkm.mypracticespring.config;
 
-import com.nkm.mypracticespring.listener.RedisTestChannelSubscriber;
-import com.nkm.mypracticespring.listener.RedisTestPatternSubscriber;
+import com.nkm.mypracticespring.listener.redis.RedisTestChannelSubscriber;
+import com.nkm.mypracticespring.listener.redis.RedisTestPatternSubscriber;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

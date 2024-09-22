@@ -1,8 +1,9 @@
-package com.nkm.mypracticespring.filter;
+package com.nkm.mypracticespring.security.filter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +21,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        String userId = request.getHeader("x-client-id");
 //        if (StringUtils.isBlank(userId)) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.setStatus(HttpStatus.UNAUTHORIZED.value());
 //            return false;
 //        }
 //
@@ -35,7 +36,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 //            return true;
 //        }
 //
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//        response.setStatus(HttpStatus.UNAUTHORIZED.value());
 //        return false;
         return true;
     }

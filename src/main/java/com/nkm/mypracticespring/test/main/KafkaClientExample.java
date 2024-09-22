@@ -1,8 +1,7 @@
-package com.nkm.mypracticespring;
+package com.nkm.mypracticespring.test.main;
 
 import java.lang.System;
 import java.io.*;
-import java.nio.file.*;
 import java.util.*;
 import java.time.*;
 import java.util.concurrent.Executors;
@@ -10,9 +9,8 @@ import java.util.concurrent.Executors;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.*;
-import org.apache.logging.log4j.core.util.ExecutorServices;
 
-public class ClientExample {
+public class KafkaClientExample {
     public static void main(String[] args) {
         try {
             String topic = "topic_java_spring_01";

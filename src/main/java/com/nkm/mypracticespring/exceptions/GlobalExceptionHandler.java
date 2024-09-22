@@ -1,10 +1,8 @@
-package com.nkm.mypracticespring.exceptions.handler;
+package com.nkm.mypracticespring.exceptions;
 
 import com.nkm.mypracticespring.common.Constant;
 import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.enums.MessageEnum;
-import com.nkm.mypracticespring.exceptions.AppException;
-import com.nkm.mypracticespring.exceptions.DataInvalidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

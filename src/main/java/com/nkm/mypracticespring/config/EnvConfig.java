@@ -20,6 +20,12 @@ public class EnvConfig {
     public static final String DB_MYSQL_PASSWORD;
     public static final String DB_MYSQL_USERNAME;
 
+    public static final String MONGODB_PASSWORD;
+    public static final String MONGODB_USERNAME;
+    public static final String MONGODB_HOST;
+    public static final int MONGODB_PORT;
+    public static final String MONGODB_DATABASE_NAME;
+
     public static final String JWT_SECRET;
 
     static {
@@ -36,6 +42,16 @@ public class EnvConfig {
         DB_MYSQL_URL = getValue("DB_MYSQL_URL", "jdbc:mysql://localhost:3306/test_database");
         DB_MYSQL_USERNAME = getValue("DB_MYSQL_USERNAME", "root");
         DB_MYSQL_PASSWORD = getValue("DB_MYSQL_PASSWORD", "admin");
+
+//        MONGODB_CONNECTION_TIMEOUT = getValue("MONGODB_CONNECTION_TIMEOUT", "10");
+//        MONGODB_MAX_POOL_SIZE = getValue();
+//        MONGODB_MIN_IDLE = getValue();
+
+        MONGODB_USERNAME = getValue("MONGODB_USERNAME", "root");
+        MONGODB_PASSWORD = getValue("MONGODB_PASSWORD", "admin");
+        MONGODB_HOST = getValue("MONGODB_HOST", "localhost");
+        MONGODB_PORT = Integer.parseInt(getValue("MONGODB_PORT", "27017"));
+        MONGODB_DATABASE_NAME = getValue("MONGODB_DATABASE_NAME", "e-commerce");
 
         JWT_SECRET = getValue("JWT_SECRET", "5pAq6zRyX8bC3dV2wS7gN1mK9jF0hL4tUoP6iBvE3nG8xZaQrY7cW2fA");
     }

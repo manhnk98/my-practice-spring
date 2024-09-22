@@ -1,10 +1,9 @@
-package com.nkm.mypracticespring.controller;
+package com.nkm.mypracticespring.listener.restful;
 
 import com.nkm.mypracticespring.common.context.RestfulCtx;
 import com.nkm.mypracticespring.dto.access.LoginRequest;
 import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.dto.access.SignupRequest;
-import com.nkm.mypracticespring.enums.MessageEnum;
 import com.nkm.mypracticespring.services.IAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

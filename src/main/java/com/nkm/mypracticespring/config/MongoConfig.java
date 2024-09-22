@@ -12,12 +12,12 @@ public class MongoConfig {
 
     @Bean
     public MongoTemplate mongoTemplate() {
-        String username = "root";
-        String password = "admin";
-        int port = 27017;
-        String host = "localhost";
-        String database = "e-commerce";
-        String conString = "mongodb://" + username + ":" + password + "@" + host + ":" + port + "/" + database + "?authSource=admin"; // + "/?authSource=admin"
+        String username = EnvConfig.MONGODB_USERNAME;
+        String password = EnvConfig.MONGODB_PASSWORD;
+        String host = EnvConfig.MONGODB_HOST;
+        int port = EnvConfig.MONGODB_PORT;
+        String database = EnvConfig.MONGODB_DATABASE_NAME;
+        String conString = "mongodb://" + username + ":" + password + "@" + host + ":" + port + "/" + database + "?authSource=admin";
         ConnectionString connectionString = new ConnectionString(conString);
         MongoDatabaseFactory mongoDatabaseFactory = new SimpleMongoClientDatabaseFactory(connectionString);
 

@@ -23,12 +23,6 @@ public class TestController {
     @Autowired
     private MysqlUserRepository mysqlUserRepository;
 
-//    @Autowired
-//    private HandlerUserMysql handlerUserMysql;
-//
-//    @Autowired
-//    private HandlerUserPostgres handlerUserPostgres;
-
     @SneakyThrows
     @PostMapping("/init-data")
     public ResponseDto<?> initData() {

@@ -1,4 +1,4 @@
-package com.nkm.mypracticespring.controller;
+package com.nkm.mypracticespring.listener.restful;
 
 import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.enums.MessageEnum;
