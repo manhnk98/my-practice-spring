@@ -1,6 +1,7 @@
 package com.nkm.mypracticespring.security.filter;
 
 import com.nkm.mypracticespring.common.Constant;
+import com.nkm.mypracticespring.exceptions.AppException;
 import com.nkm.mypracticespring.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -38,7 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            SecurityContextHolder.clearContext();
             e.printStackTrace();
         }
         filterChain.doFilter(request, response);

@@ -82,9 +82,7 @@ public class SecurityConfig {
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authenticationProvider(authenticationProvider());
-
         http.addFilterAfter(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
