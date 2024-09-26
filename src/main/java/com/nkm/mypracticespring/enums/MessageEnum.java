@@ -10,7 +10,8 @@ public enum MessageEnum {
 
     ERR_APPLICATION("30000", "Application error"),
     ERR_INVALID_TOKEN("30001", "Token is invalid"),
-    ERR_INVALID_PARAM("30002", "Param invalid");
+    ERR_INVALID_PARAM("30002", "Param invalid"),
+    ERR_UNAUTHORIZED("30003", "Unauthorized"),;
 
     private final String code;
     private final String message;

@@ -3,28 +3,37 @@ package com.nkm.mypracticespring.utils;
 import com.nkm.mypracticespring.common.Constant;
 import com.nkm.mypracticespring.config.EnvConfig;
 import com.nkm.mypracticespring.dto.jwt.CreateJwtDto;
+import com.nkm.mypracticespring.dto.jwt.TokenGeneratedDto;
+import com.nkm.mypracticespring.enums.TokenType;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.log4j.Log4j2;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j2
 public class JwtUtils {
 
     private static SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(EnvConfig.JWT_SECRET.getBytes());
     }
 
-    public static String generateToken(CreateJwtDto info, long expireTime) {
+    public static String generateToken(CreateJwtDto info, long expireTime, TokenType type) {
         Date now = new Date();
         Date expired = new Date(now.getTime() + expireTime);
         Map<String, Object> claims = new HashMap<>();
-        claims.put(Constant.PAYLOAD_USER_ID, info.userId());
-        claims.put(Constant.PAYLOAD_EMAIL, info.email());
+        if (type.equals(TokenType.ACCESS_TOKEN)) {
+            claims.put(Constant.PAYLOAD_USER_ID, info.userId());
+            claims.put(Constant.PAYLOAD_EMAIL, info.email());
+        } else if (type.equals(TokenType.REFRESH_TOKEN)) {
+            claims.put(Constant.PAYLOAD_USER_ID, info.userId());
+        }
+
         return Jwts.builder()
-                .subject("userInfo")
+                .subject(type.name())
                 .claims(claims)
                 .issuedAt(now)
                 .expiration(expired)
@@ -32,16 +41,10 @@ public class JwtUtils {
                 .compact();
     }
 
-    public static String generateToken(Map<String, Object> params, long expireTime) {
-        Date now = new Date();
-        Date expired = new Date(now.getTime() + expireTime);
-        return Jwts.builder()
-                .subject("userInfo")
-                .claims(params)
-                .issuedAt(now)
-                .expiration(expired)
-                .signWith(getSecretKey())
-                .compact();
+    public static TokenGeneratedDto generateToken(CreateJwtDto info) {
+        String accessToken = generateToken(info, Constant.ACCESS_TOKEN_EXPIRE_TIME, TokenType.ACCESS_TOKEN);
+        String refreshToken = generateToken(info, Constant.REFRESH_TOKEN_EXPIRE_TIME, TokenType.REFRESH_TOKEN);
+        return new TokenGeneratedDto(accessToken, refreshToken);
     }
 
     public static String getFromJwt(String token, String key) {
@@ -55,7 +58,7 @@ public class JwtUtils {
         return (String) claims.get(key);
     }
 
-    public static boolean validateToken(String token) {
+    public static boolean tokenIsValid(String token) {
         try {
             Jwts
                     .parser()
@@ -64,24 +67,24 @@ public class JwtUtils {
                     .parseSignedClaims(token);
             return true;
         } catch (MalformedJwtException ex) {
-            System.out.println("Invalid JWT token");
+            log.error("Invalid JWT token", ex);
         } catch (ExpiredJwtException ex) {
-            System.out.println("Expired JWT token");
+            log.error("Expired JWT token", ex);
         } catch (UnsupportedJwtException ex) {
-            System.out.println("Unsupported JWT token");
+            log.error("Unsupported JWT token", ex);
         } catch (IllegalArgumentException ex) {
-            System.out.println("JWT claims string is empty.");
+            log.error("JWT claims string is empty", ex);
         }
         return false;
     }
 
-//    public static void main(String[] args) {
-//        String jwtToken = generateToken(new CreateJwtDto("manhnk", "nkm081198@gmail.com"), Constant.TOKEN_EXPIRE_TIME);
-//        System.out.println("secretKey => " + getSecretKey().getAlgorithm());
-//        System.out.println("jwt token => " + jwtToken);
-//        System.out.println("validate token => " + validateToken(jwtToken));
-//        System.out.println("username => " + getFromJwt(jwtToken, Constant.PAYLOAD_USER_ID));
-//    }
+    public static void main(String[] args) {
+        TokenGeneratedDto jwtToken = generateToken(new CreateJwtDto("manhnk", "nkm081198@gmail.com"));
+        System.out.println("secretKey => " + getSecretKey().getAlgorithm());
+        System.out.println("jwt token => " + jwtToken);
+        System.out.println("validate token => " + tokenIsValid(jwtToken.accessToken()));
+        System.out.println("username => " + getFromJwt(jwtToken.accessToken(), Constant.PAYLOAD_USER_ID));
+    }
 
 }
 

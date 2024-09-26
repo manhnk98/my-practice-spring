@@ -1,38 +1,40 @@
 package com.nkm.mypracticespring.listener.restful;
 
-import com.nkm.mypracticespring.common.context.RestfulCtx;
-import com.nkm.mypracticespring.dto.access.CustomUserDetails;
 import com.nkm.mypracticespring.dto.access.LoginRequest;
-import com.nkm.mypracticespring.dto.access.LoginResponse;
-import com.nkm.mypracticespring.dto.common.ResponseDto;
+import com.nkm.mypracticespring.dto.access.RefreshTokenRequest;
 import com.nkm.mypracticespring.dto.access.SignupRequest;
+import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.services.IAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/api")
+@RequestMapping("/v1/api/access")
 public class AccessController {
 
     @Autowired
     private IAccessService accessService;
 
-    @PostMapping("/shop/signup")
+    @PostMapping("/signup")
     public ResponseDto<?> signup(@RequestBody SignupRequest signupReq) {
-        accessService.signUp(signupReq);
-        return new ResponseDto<>(RestfulCtx.getRequestId());
+        return new ResponseDto<>(accessService.signUp(signupReq));
     }
 
-    @PostMapping(value = "/shop/login")
+    @PostMapping(value = "/login")
     public ResponseDto<?> login(@RequestBody LoginRequest request) {
+        return new ResponseDto<>(accessService.login(request));
+    }
+
+    @PostMapping(value = "/refresh-token")
+    public ResponseDto<?> refreshToken(@RequestBody RefreshTokenRequest request) {
+        return new ResponseDto<>(accessService.refreshToken(request));
+    }
+
+    @PostMapping(value = "/logout")
+    public ResponseDto<?> logout(@RequestBody LoginRequest request) {
         return new ResponseDto<>(accessService.login(request));
     }
 

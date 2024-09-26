@@ -31,6 +31,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ResponseDto<?>> handleAuthenticationException(AuthenticationException ex) {
+        MessageEnum messageEnum = MessageEnum.ERR_UNAUTHORIZED;
+        String message = Objects.requireNonNullElse(ex.getMessage(), messageEnum.getMessage());
+        ResponseDto<?> responseError = this.buildResponseErr(message, messageEnum.getCode());
+
+        return new ResponseEntity<>(responseError, HttpStatus.UNAUTHORIZED);
+    }
+
 //    @ExceptionHandler(NoHandlerFoundException.class)
 //    public ResponseEntity<ResponseDto<?>> handleResourceNotFoundException() {
 //        ResponseDto<?> responseError = this.buildResponseErr("Resource not found", "x");

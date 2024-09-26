@@ -1,5 +1,7 @@
 package com.nkm.mypracticespring.common.context;
 
+import com.nkm.mypracticespring.common.Constant;
+import com.nkm.mypracticespring.dto.access.ShopInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.context.request.RequestAttributes;
@@ -19,10 +21,10 @@ public class RestfulCtx {
         return null;
     }
 
-    public static String getRequestId() {
+    public static ShopInfo shopContext() {
         HttpServletRequest request = getCurrentHttpRequest();
         if (request != null) {
-            return (String) request.getAttribute("requestId");
+            return (ShopInfo) request.getAttribute(Constant.SHOP_CONTEXT);
         }
         return null;
     }
