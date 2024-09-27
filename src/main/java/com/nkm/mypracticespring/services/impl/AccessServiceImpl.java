@@ -2,19 +2,24 @@ package com.nkm.mypracticespring.services.impl;
 
 import com.nkm.mypracticespring.common.Constant;
 import com.nkm.mypracticespring.dto.access.*;
-import com.nkm.mypracticespring.dto.jwt.CreateJwtDto;
 import com.nkm.mypracticespring.dto.jwt.TokenGeneratedDto;
 import com.nkm.mypracticespring.enums.RoleShop;
+import com.nkm.mypracticespring.enums.SessionStatus;
 import com.nkm.mypracticespring.enums.TokenType;
 import com.nkm.mypracticespring.exceptions.AppException;
 import com.nkm.mypracticespring.exceptions.AuthenticationException;
+import com.nkm.mypracticespring.models.SessionModel;
 import com.nkm.mypracticespring.models.ShopModel;
+import com.nkm.mypracticespring.repositories.SessionRepository;
 import com.nkm.mypracticespring.repositories.ShopRepository;
+import com.nkm.mypracticespring.services.CommonService;
 import com.nkm.mypracticespring.services.IAccessService;
+import com.nkm.mypracticespring.utils.CommonUtils;
 import com.nkm.mypracticespring.utils.JwtUtils;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,10 +40,19 @@ public class AccessServiceImpl implements IAccessService {
     private ShopRepository shopRepository;
 
     @Autowired
+    private SessionRepository sessionRepository;
+
+    @Autowired
+    private RedisTemplate<String, String> sessionManagerRedis;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CommonService commonService;
+
     @Override
-    public SignupResponse signUp(SignupRequest signupReq) {
+    public SignupResponse register(SignupRequest signupReq) {
         Optional<ShopModel> shopInfoModel = shopRepository.findFirstByEmail(signupReq.getEmail());
         if (shopInfoModel.isPresent()) {
             throw new AppException("Shop already registered");
@@ -54,14 +68,9 @@ public class AccessServiceImpl implements IAccessService {
         shopRepository.save(newShop);
 
         ShopInfo shopInfo = new ShopInfo(newShop.getId(), newShop.getName(), newShop.getEmail());
+        TokenGeneratedDto tokenGenerated = commonService.genAndSaveToken(newShop);
 
-        TokenGeneratedDto tokenGenerated = JwtUtils.generateToken(new CreateJwtDto(newShop.getId(), newShop.getEmail()));
-        SignupResponse response = new SignupResponse();
-        response.setShop(shopInfo);
-        response.setAccessToken(tokenGenerated.accessToken());
-        response.setRefreshToken(tokenGenerated.refreshToken());
-
-        return response;
+        return new SignupResponse(shopInfo, tokenGenerated.accessToken(), tokenGenerated.refreshToken());
     }
 
     @Override
@@ -72,8 +81,7 @@ public class AccessServiceImpl implements IAccessService {
         CustomUserDetails shopDetails = (CustomUserDetails) authentication.getPrincipal();
         ShopModel shopModel = shopDetails.getShopModel();
         ShopInfo shopInfo = new ShopInfo(shopModel.getId(), shopModel.getName(), shopModel.getEmail());
-
-        TokenGeneratedDto tokenGenerated = JwtUtils.generateToken(new CreateJwtDto(shopModel.getId(), shopModel.getEmail()));
+        TokenGeneratedDto tokenGenerated = commonService.genAndSaveToken(shopModel);
 
         return new LoginResponse(shopInfo, tokenGenerated.accessToken(), tokenGenerated.refreshToken());
     }
@@ -91,15 +99,29 @@ public class AccessServiceImpl implements IAccessService {
             throw new AuthenticationException("Invalid refresh token");
         }
 
+        String userId = JwtUtils.getFromJwt(refreshToken, Constant.PAYLOAD_USER_ID);
+        String sessionIdJwt = JwtUtils.getFromJwt(refreshToken, Constant.JTI_JWT);
+        String statusSession = commonService.getStatusSession(userId, sessionIdJwt);
+        if (StringUtils.isEmpty(statusSession) || !SessionStatus.ACTIVE.name().equals(statusSession)) {
+            throw new AuthenticationException("Session inactive");
+        }
+
         String shopId = JwtUtils.getFromJwt(refreshToken, Constant.PAYLOAD_USER_ID);
         Optional<ShopModel> shopInfoModel = shopRepository.findById(shopId);
         if (shopInfoModel.isEmpty()) {
             throw new AuthenticationException("Shop information not found");
         }
-
-        ShopModel shop = shopInfoModel.get();
-        TokenGeneratedDto tokenGenerated = JwtUtils.generateToken(new CreateJwtDto(shop.getId(), shop.getEmail()));
+        TokenGeneratedDto tokenGenerated = commonService.genAndSaveToken(shopInfoModel.get());
 
         return new RefreshTokenResponse(tokenGenerated.accessToken(), tokenGenerated.refreshToken());
+    }
+
+    @Override
+    public void removeSession(String userId, String sessionId) {
+        if (sessionId != null) {
+            sessionManagerRedis.opsForValue().getAndDelete(CommonUtils.keySession(userId, sessionId));
+            Optional<SessionModel> sessionModel = sessionRepository.findById(sessionId);
+            sessionModel.ifPresent(model -> sessionRepository.delete(model));
+        }
     }
 }

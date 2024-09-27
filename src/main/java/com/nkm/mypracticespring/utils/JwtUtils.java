@@ -33,6 +33,7 @@ public class JwtUtils {
         }
 
         return Jwts.builder()
+                .id(info.sessionId())
                 .subject(type.name())
                 .claims(claims)
                 .issuedAt(now)
@@ -79,7 +80,7 @@ public class JwtUtils {
     }
 
     public static void main(String[] args) {
-        TokenGeneratedDto jwtToken = generateToken(new CreateJwtDto("manhnk", "nkm081198@gmail.com"));
+        TokenGeneratedDto jwtToken = generateToken(new CreateJwtDto("manhnk", "nkm081198@gmail.com", "sessionId"));
         System.out.println("secretKey => " + getSecretKey().getAlgorithm());
         System.out.println("jwt token => " + jwtToken);
         System.out.println("validate token => " + tokenIsValid(jwtToken.accessToken()));

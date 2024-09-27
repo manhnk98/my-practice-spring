@@ -34,4 +34,10 @@ public class ResponseDto<T> {
         this.data = data;
     }
 
+    public ResponseDto(MessageEnum msg) {
+        this.status = Constant.SUCCESS;
+        this.message = msg.getMessage();
+        this.code = msg.getCode();
+    }
+
 }

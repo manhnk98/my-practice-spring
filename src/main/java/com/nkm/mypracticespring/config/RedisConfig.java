@@ -82,8 +82,8 @@ public class RedisConfig {
         return container;
     }
 
-    @Bean(name = "redisTokenPortalV2")
-    public RedisTemplate<String, String> redisTokenPortalV2(RedisConnectionFactory redisConnectionFactory) {
+    @Bean(name = "sessionManagerRedis")
+    public RedisTemplate<String, String> sessionManagerRedis(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, String> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         return template;

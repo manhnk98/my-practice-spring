@@ -33,10 +33,8 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(userDetailsService);
-    }
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -83,7 +81,7 @@ public class SecurityConfig {
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authenticationProvider(authenticationProvider());
-        http.addFilterAfter(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();

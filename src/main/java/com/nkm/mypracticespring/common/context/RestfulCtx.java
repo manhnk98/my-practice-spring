@@ -29,6 +29,14 @@ public class RestfulCtx {
         return null;
     }
 
+    public static String getSessionRequest() {
+        HttpServletRequest request = getCurrentHttpRequest();
+        if (request != null) {
+            return (String) request.getAttribute(Constant.SESSION_ID_REQUEST);
+        }
+        return null;
+    }
+
     public static Locale getLocale() {
         try {
             HttpServletRequest request = getCurrentHttpRequest();

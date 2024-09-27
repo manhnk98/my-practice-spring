@@ -4,9 +4,11 @@ import com.nkm.mypracticespring.dto.access.*;
 
 public interface IAccessService {
 
-    SignupResponse signUp(SignupRequest signupReq);
+    SignupResponse register(SignupRequest signupReq);
 
     LoginResponse login(LoginRequest loginReq);
 
     RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenReq);
+
+    void removeSession(String userId, String sessionId);
 }
