@@ -28,7 +28,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    public static String[] WHITE_LIST_API = {"/health-check", "/v1/api/access/login", "/v1/api/access/logout", "/v1/api/access/signup", "/v1/api/access/refresh-token"};
+    public static String[] WHITE_LIST_API = {
+            "/health-check",
+            "/v1/api/access/login",
+            "/v1/api/access/signup",
+            "/v1/api/access/refresh-token"
+    };
 
     @Autowired
     private UserDetailsService userDetailsService;

@@ -1,6 +1,6 @@
 package com.nkm.mypracticespring.common;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 public class Constant {
 
@@ -13,7 +13,8 @@ public class Constant {
     public static final String JTI_JWT = "jti";
     public static final String PAYLOAD_USER_ID = "userId";
     public static final String PAYLOAD_EMAIL = "email";
-    public static final long ACCESS_TOKEN_EXPIRE_TIME = TimeUnit.MINUTES.toMillis(5);
-    public static final long REFRESH_TOKEN_EXPIRE_TIME = TimeUnit.MINUTES.toMillis(60);
+
+    public static final Duration ACCESS_TOKEN_EXPIRE_TIME = Duration.ofMinutes(5);
+    public static final Duration REFRESH_TOKEN_EXPIRE_TIME = Duration.ofMinutes(60);
 
 }

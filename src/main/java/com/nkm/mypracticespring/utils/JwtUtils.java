@@ -43,8 +43,8 @@ public class JwtUtils {
     }
 
     public static TokenGeneratedDto generateToken(CreateJwtDto info) {
-        String accessToken = generateToken(info, Constant.ACCESS_TOKEN_EXPIRE_TIME, TokenType.ACCESS_TOKEN);
-        String refreshToken = generateToken(info, Constant.REFRESH_TOKEN_EXPIRE_TIME, TokenType.REFRESH_TOKEN);
+        String accessToken = generateToken(info, Constant.ACCESS_TOKEN_EXPIRE_TIME.toMillis(), TokenType.ACCESS_TOKEN);
+        String refreshToken = generateToken(info, Constant.REFRESH_TOKEN_EXPIRE_TIME.toMillis(), TokenType.REFRESH_TOKEN);
         return new TokenGeneratedDto(accessToken, refreshToken);
     }
 

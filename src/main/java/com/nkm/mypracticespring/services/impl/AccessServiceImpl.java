@@ -68,7 +68,7 @@ public class AccessServiceImpl implements IAccessService {
         shopRepository.save(newShop);
 
         ShopInfo shopInfo = new ShopInfo(newShop.getId(), newShop.getName(), newShop.getEmail());
-        TokenGeneratedDto tokenGenerated = commonService.genAndSaveToken(newShop);
+        TokenGeneratedDto tokenGenerated = commonService.saveSession(newShop);
 
         return new SignupResponse(shopInfo, tokenGenerated.accessToken(), tokenGenerated.refreshToken());
     }
@@ -81,7 +81,7 @@ public class AccessServiceImpl implements IAccessService {
         CustomUserDetails shopDetails = (CustomUserDetails) authentication.getPrincipal();
         ShopModel shopModel = shopDetails.getShopModel();
         ShopInfo shopInfo = new ShopInfo(shopModel.getId(), shopModel.getName(), shopModel.getEmail());
-        TokenGeneratedDto tokenGenerated = commonService.genAndSaveToken(shopModel);
+        TokenGeneratedDto tokenGenerated = commonService.saveSession(shopModel);
 
         return new LoginResponse(shopInfo, tokenGenerated.accessToken(), tokenGenerated.refreshToken());
     }
@@ -111,7 +111,8 @@ public class AccessServiceImpl implements IAccessService {
         if (shopInfoModel.isEmpty()) {
             throw new AuthenticationException("Shop information not found");
         }
-        TokenGeneratedDto tokenGenerated = commonService.genAndSaveToken(shopInfoModel.get());
+        commonService.removeSession(userId, sessionIdJwt);
+        TokenGeneratedDto tokenGenerated = commonService.saveSession(shopInfoModel.get());
 
         return new RefreshTokenResponse(tokenGenerated.accessToken(), tokenGenerated.refreshToken());
     }

@@ -7,6 +7,7 @@ import java.util.Arrays;
 @Getter
 public enum MessageEnum {
     SUCCESS("20001", "Success"),
+    LOGOUT_SUCCESS("20002", "Logout success"),
 
     ERR_APPLICATION("30000", "Application error"),
     ERR_INVALID_TOKEN("30001", "Token is invalid"),

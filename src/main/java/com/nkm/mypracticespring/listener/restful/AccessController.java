@@ -3,6 +3,7 @@ package com.nkm.mypracticespring.listener.restful;
 import com.nkm.mypracticespring.common.context.RestfulCtx;
 import com.nkm.mypracticespring.dto.access.LoginRequest;
 import com.nkm.mypracticespring.dto.access.RefreshTokenRequest;
+import com.nkm.mypracticespring.dto.access.RefreshTokenResponse;
 import com.nkm.mypracticespring.dto.access.SignupRequest;
 import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.enums.MessageEnum;
@@ -34,7 +35,8 @@ public class AccessController {
 
     @PostMapping(value = "/refresh-token")
     public ResponseDto<?> refreshToken(@RequestBody RefreshTokenRequest request) {
-        return new ResponseDto<>(accessService.refreshToken(request));
+        RefreshTokenResponse tokenResponse = accessService.refreshToken(request);
+        return new ResponseDto<>(tokenResponse);
     }
 
     @PostMapping(value = "/logout")
