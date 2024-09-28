@@ -2,6 +2,9 @@ package com.nkm.mypracticespring.config;
 
 import com.nkm.mypracticespring.listener.redis.RedisTestChannelSubscriber;
 import com.nkm.mypracticespring.listener.redis.RedisTestPatternSubscriber;
+import io.lettuce.core.ClientOptions;
+import io.lettuce.core.SocketOptions;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +19,9 @@ import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.time.Duration;
+
+@Log4j2
 @Configuration
 public class RedisConfig {
 
@@ -27,41 +33,26 @@ public class RedisConfig {
         configuration.setPassword("admin");
         configuration.setDatabase(0);
 
+        SocketOptions socketOptions = SocketOptions.builder()
+                .connectTimeout(Duration.ofSeconds(1))  // Thời gian chờ kết nối
+                .build();
+
+        ClientOptions clientOptions = ClientOptions.builder()
+                .socketOptions(socketOptions)
+                .autoReconnect(true)
+                .build();
+
         // idle: số lượng kết nối nhàn rỗi
         GenericObjectPoolConfig<?> poolConfig = new GenericObjectPoolConfig<>();
-        poolConfig.setMaxIdle(5);
-        poolConfig.setMaxTotal(10);
+        poolConfig.setMaxIdle(3);
+        poolConfig.setMaxTotal(5);
         poolConfig.setMinIdle(1);
 
         LettucePoolingClientConfiguration lettucePoolConfig = LettucePoolingClientConfiguration.builder()
                 .poolConfig(poolConfig)
+                .clientOptions(clientOptions)
+                .commandTimeout(Duration.ofSeconds(1))
                 .build();
-
-//        RedisProperties redisProperties = new RedisProperties();
-//        redisProperties.setDatabase(Integer.parseInt(System.getenv("REDIS_DB")));
-//        redisProperties.setPort(Integer.parseInt(System.getenv("REDIS_PORT")));
-//        redisProperties.setPassword(System.getenv("REDIS_PASSWORD"));
-//        RedisProperties.Sentinel sentinel = new RedisProperties.Sentinel();
-//        sentinel.setMaster(System.getenv("REDIS_MASTER_NAME"));
-//        sentinel.setNodes(List.of(System.getenv("REDIS_HOSTS").split(",")));
-//        sentinel.setPassword(System.getenv("REDIS_SENTINEL_PASSWORD"));
-//        redisProperties.setSentinel(sentinel);
-
-//        RedisSentinelConfiguration configuration = new RedisSentinelConfiguration();
-//        configuration.setDatabase(Integer.parseInt(System.getenv("REDIS_DB")));
-//        configuration.setPassword(System.getenv("REDIS_PASSWORD"));
-//        configuration.master(System.getenv("REDIS_MASTER_NAME"));
-//
-//        configuration.setSentinelPassword(System.getenv("REDIS_SENTINEL_PASSWORD"));
-//        String[] redisNodes = System.getenv("REDIS_HOSTS").split(",");
-//        for (String redisNode : redisNodes) {
-//            String host = redisNode.split(":")[0];
-//            int port = Integer.parseInt(redisNode.split(":")[1]);
-//            RedisNode rdNode = RedisNode.newRedisNode()
-//                    .listeningAt(host, port)
-//                    .build();
-//            configuration.addSentinel(rdNode);
-//        }
 
         return new LettuceConnectionFactory(configuration, lettucePoolConfig);
     }

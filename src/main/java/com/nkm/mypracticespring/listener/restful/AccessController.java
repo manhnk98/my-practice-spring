@@ -42,7 +42,7 @@ public class AccessController {
     @PostMapping(value = "/logout")
     public ResponseDto<?> logout() {
         accessService.removeSession(Objects.requireNonNull(RestfulCtx.shopContext()).id(), RestfulCtx.getSessionRequest());
-        return new ResponseDto<>(MessageEnum.SUCCESS);
+        return new ResponseDto<>(MessageEnum.LOGOUT_SUCCESS);
     }
 
 }

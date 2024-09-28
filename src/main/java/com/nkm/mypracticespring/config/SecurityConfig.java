@@ -32,7 +32,8 @@ public class SecurityConfig {
             "/health-check",
             "/v1/api/access/login",
             "/v1/api/access/signup",
-            "/v1/api/access/refresh-token"
+            "/v1/api/access/refresh-token",
+            "/test/**"
     };
 
     @Autowired

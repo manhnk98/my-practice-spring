@@ -8,18 +8,15 @@ import com.nkm.mypracticespring.enums.SessionStatus;
 import com.nkm.mypracticespring.enums.TokenType;
 import com.nkm.mypracticespring.exceptions.AppException;
 import com.nkm.mypracticespring.exceptions.AuthenticationException;
-import com.nkm.mypracticespring.models.SessionModel;
 import com.nkm.mypracticespring.models.ShopModel;
 import com.nkm.mypracticespring.repositories.SessionRepository;
 import com.nkm.mypracticespring.repositories.ShopRepository;
 import com.nkm.mypracticespring.services.CommonService;
 import com.nkm.mypracticespring.services.IAccessService;
-import com.nkm.mypracticespring.utils.CommonUtils;
 import com.nkm.mypracticespring.utils.JwtUtils;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,9 +38,6 @@ public class AccessServiceImpl implements IAccessService {
 
     @Autowired
     private SessionRepository sessionRepository;
-
-    @Autowired
-    private RedisTemplate<String, String> sessionManagerRedis;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -120,9 +114,8 @@ public class AccessServiceImpl implements IAccessService {
     @Override
     public void removeSession(String userId, String sessionId) {
         if (sessionId != null) {
-            sessionManagerRedis.opsForValue().getAndDelete(CommonUtils.keySession(userId, sessionId));
-            Optional<SessionModel> sessionModel = sessionRepository.findById(sessionId);
-            sessionModel.ifPresent(model -> sessionRepository.delete(model));
+            commonService.removeSession(userId, sessionId);
+            sessionRepository.deleteById(sessionId);
         }
     }
 }
