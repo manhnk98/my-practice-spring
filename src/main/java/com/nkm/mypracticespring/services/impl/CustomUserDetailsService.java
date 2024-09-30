@@ -2,7 +2,7 @@ package com.nkm.mypracticespring.services.impl;
 
 import com.nkm.mypracticespring.dto.access.CustomUserDetails;
 import com.nkm.mypracticespring.models.ShopModel;
-import com.nkm.mypracticespring.repositories.ShopRepository;
+import com.nkm.mypracticespring.repositories.IShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,11 +19,11 @@ import java.util.Set;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private ShopRepository shopRepository;
+    private IShopRepository IShopRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<ShopModel> shopModel = shopRepository.findFirstByEmail(email);
+        Optional<ShopModel> shopModel = IShopRepository.findFirstByEmail(email);
         if (shopModel.isEmpty()) {
             throw new UsernameNotFoundException(String.format("Not found user : %s", email));
         }

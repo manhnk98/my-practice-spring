@@ -7,7 +7,7 @@ import com.nkm.mypracticespring.dto.jwt.TokenGeneratedDto;
 import com.nkm.mypracticespring.enums.SessionStatus;
 import com.nkm.mypracticespring.models.SessionModel;
 import com.nkm.mypracticespring.models.ShopModel;
-import com.nkm.mypracticespring.repositories.SessionRepository;
+import com.nkm.mypracticespring.repositories.ISessionRepository;
 import com.nkm.mypracticespring.utils.CommonUtils;
 import com.nkm.mypracticespring.utils.JwtUtils;
 import lombok.extern.log4j.Log4j2;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class CommonService {
 
     @Autowired
-    private SessionRepository sessionRepository;
+    private ISessionRepository ISessionRepository;
 
     @Autowired
     private RedisAppManager redisAppManager;
@@ -39,7 +39,7 @@ public class CommonService {
         sessionModel.setCreatedTime(now);
         sessionModel.setUpdatedTime(now);
         sessionModel.setExpireTime(now.plus(Constant.REFRESH_TOKEN_EXPIRE_TIME.toMillis(), ChronoUnit.MILLIS));
-        sessionRepository.save(sessionModel);
+        ISessionRepository.save(sessionModel);
 
         String sessionId = sessionModel.getId();
         String key = CommonUtils.keySession(shopModel.getId(), sessionId);
@@ -53,7 +53,7 @@ public class CommonService {
     }
 
     public void removeSession(String userId, String sessionId) {
-        sessionRepository.deleteById(sessionId);
+        ISessionRepository.deleteById(sessionId);
         String key = CommonUtils.keySession(userId, sessionId);
         try {
             redisAppManager.removeSession(key);
@@ -84,7 +84,7 @@ public class CommonService {
     }
 
     private String handleMissingSessionInRedis(String sessionId, String keySession) {
-        Optional<SessionModel> sessionModel = sessionRepository.findById(sessionId);
+        Optional<SessionModel> sessionModel = ISessionRepository.findById(sessionId);
         if (sessionModel.isPresent() &&
                 sessionModel.get().getExpireTime().isAfter(LocalDateTime.now()) &&
                 sessionModel.get().getStatus() == SessionStatus.ACTIVE) {
@@ -111,7 +111,7 @@ public class CommonService {
         } catch (Exception e) {
             log.error("Error adding empty session to Redis for key {}: {}", keySession, e.getMessage());
         }
-        sessionRepository.deleteById(sessionId);
+        ISessionRepository.deleteById(sessionId);
     }
 
 }

@@ -9,8 +9,8 @@ import com.nkm.mypracticespring.enums.TokenType;
 import com.nkm.mypracticespring.exceptions.AppException;
 import com.nkm.mypracticespring.exceptions.AuthenticationException;
 import com.nkm.mypracticespring.models.ShopModel;
-import com.nkm.mypracticespring.repositories.SessionRepository;
-import com.nkm.mypracticespring.repositories.ShopRepository;
+import com.nkm.mypracticespring.repositories.ISessionRepository;
+import com.nkm.mypracticespring.repositories.IShopRepository;
 import com.nkm.mypracticespring.services.CommonService;
 import com.nkm.mypracticespring.services.IAccessService;
 import com.nkm.mypracticespring.utils.JwtUtils;
@@ -34,10 +34,10 @@ public class AccessServiceImpl implements IAccessService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private ShopRepository shopRepository;
+    private IShopRepository IShopRepository;
 
     @Autowired
-    private SessionRepository sessionRepository;
+    private ISessionRepository ISessionRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -47,7 +47,7 @@ public class AccessServiceImpl implements IAccessService {
 
     @Override
     public SignupResponse register(SignupRequest signupReq) {
-        Optional<ShopModel> shopInfoModel = shopRepository.findFirstByEmail(signupReq.getEmail());
+        Optional<ShopModel> shopInfoModel = IShopRepository.findFirstByEmail(signupReq.getEmail());
         if (shopInfoModel.isPresent()) {
             throw new AppException("Shop already registered");
         }
@@ -59,7 +59,7 @@ public class AccessServiceImpl implements IAccessService {
         newShop.setEmail(signupReq.getEmail());
         newShop.setPassword(passwordHash);
         newShop.setRoles(List.of(RoleShop.SHOP.name()));
-        shopRepository.save(newShop);
+        IShopRepository.save(newShop);
 
         ShopInfo shopInfo = new ShopInfo(newShop.getId(), newShop.getName(), newShop.getEmail());
         TokenGeneratedDto tokenGenerated = commonService.saveSession(newShop);
@@ -101,7 +101,7 @@ public class AccessServiceImpl implements IAccessService {
         }
 
         String shopId = JwtUtils.getFromJwt(refreshToken, Constant.PAYLOAD_USER_ID);
-        Optional<ShopModel> shopInfoModel = shopRepository.findById(shopId);
+        Optional<ShopModel> shopInfoModel = IShopRepository.findById(shopId);
         if (shopInfoModel.isEmpty()) {
             throw new AuthenticationException("Shop information not found");
         }
@@ -115,7 +115,7 @@ public class AccessServiceImpl implements IAccessService {
     public void removeSession(String userId, String sessionId) {
         if (sessionId != null) {
             commonService.removeSession(userId, sessionId);
-            sessionRepository.deleteById(sessionId);
+            ISessionRepository.deleteById(sessionId);
         }
     }
 }
