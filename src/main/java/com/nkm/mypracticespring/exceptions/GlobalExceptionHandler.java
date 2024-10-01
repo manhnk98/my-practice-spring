@@ -13,8 +13,8 @@ import java.util.Objects;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(DataInvalidException.class)
-    public ResponseEntity<ResponseDto<?>> handleValidationException(DataInvalidException ex) {
+    @ExceptionHandler(DataRequestInvalidException.class)
+    public ResponseEntity<ResponseDto<?>> handleValidationException(DataRequestInvalidException ex) {
         MessageEnum messageEnum = MessageEnum.ERR_INVALID_PARAM;
         String message = Objects.requireNonNullElse(ex.getMessage(), messageEnum.getMessage());
         ResponseDto<?> responseError = this.buildResponseErr(message, messageEnum.getCode());

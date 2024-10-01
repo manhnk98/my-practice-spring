@@ -1,7 +1,7 @@
 package com.nkm.mypracticespring.services.impl;
 
 import com.nkm.mypracticespring.enums.ProductTypeEnum;
-import com.nkm.mypracticespring.services.IProductFactoryService;
+import com.nkm.mypracticespring.services.ProductFactoryService;
 import com.nkm.mypracticespring.services.IProductService;
 import com.nkm.mypracticespring.services.impl.product.ClothesServiceImpl;
 import com.nkm.mypracticespring.services.impl.product.ElectronicServiceImpl;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class ProductServiceImpl implements IProductService {
 
-    private static final Map<ProductTypeEnum, IProductFactoryService> PRODUCT_FACTORY_REGISTRY = new HashMap<>();
+    private static final Map<ProductTypeEnum, ProductFactoryService> PRODUCT_FACTORY_REGISTRY = new HashMap<>();
 
     public ProductServiceImpl(ClothesServiceImpl clothesService,
                               ElectronicServiceImpl electronicService,
@@ -27,14 +27,14 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void createProduct(ProductTypeEnum productType, Object payload) {
-        IProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
-        productFactory.createProduct("");
+    public String createProduct(ProductTypeEnum productType, Object payload) {
+        ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
+        return productFactory.createProduct("");
     }
 
     @Override
     public void updateProduct(ProductTypeEnum productType, Object payload) {
-        IProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
+        ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
         productFactory.updateProduct("", "");
     }
 }

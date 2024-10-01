@@ -1,14 +1,14 @@
 package com.nkm.mypracticespring.services.impl.product;
 
 import com.nkm.mypracticespring.repositories.IElectronicRepository;
-import com.nkm.mypracticespring.services.IProductFactoryService;
+import com.nkm.mypracticespring.services.ProductFactoryService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-public class ElectronicServiceImpl implements IProductFactoryService {
+public class ElectronicServiceImpl extends ProductFactoryService {
 
     @Autowired
     private IElectronicRepository electronicRepository;

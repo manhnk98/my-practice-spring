@@ -1,7 +1,7 @@
 package com.nkm.mypracticespring.dto.common;
 
-import com.nkm.mypracticespring.exceptions.DataInvalidException;
+import com.nkm.mypracticespring.exceptions.DataRequestInvalidException;
 
 public abstract class DataRequest {
-    public abstract void validate() throws DataInvalidException;
+    public abstract void validate() throws DataRequestInvalidException;
 }

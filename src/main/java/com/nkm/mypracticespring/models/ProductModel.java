@@ -22,14 +22,14 @@ public class ProductModel extends BaseModel {
     @Field("product_description")
     private String productDescription;
 
-    @Field("product_slug")
-    private String productSlug;
+//    @Field("product_slug")
+//    private String productSlug;
 
     @Field("product_price")
     private Double productPrice;
 
-    @Field("product_quality")
-    private Integer productQuality;
+//    @Field("product_quality")
+//    private Integer productQuality;
 
     @Field("product_type")
     private String productType;
