@@ -1,5 +1,6 @@
 package com.nkm.mypracticespring.services.impl;
 
+import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
 import com.nkm.mypracticespring.enums.ProductTypeEnum;
 import com.nkm.mypracticespring.services.ProductFactoryService;
 import com.nkm.mypracticespring.services.IProductService;
@@ -27,14 +28,14 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public String createProduct(ProductTypeEnum productType, Object payload) {
+    public String createProduct(ProductTypeEnum productType, ProductCreateRequest request, String shopId) {
         ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
-        return productFactory.createProduct("");
+        return productFactory.createProduct(shopId, request);
     }
 
     @Override
-    public void updateProduct(ProductTypeEnum productType, Object payload) {
+    public void updateProduct(ProductTypeEnum productType, ProductCreateRequest request) {
         ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
-        productFactory.updateProduct("", "");
+        productFactory.updateProduct("", request);
     }
 }

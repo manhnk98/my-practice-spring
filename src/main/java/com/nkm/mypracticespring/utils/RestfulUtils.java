@@ -21,7 +21,7 @@ public class RestfulUtils {
         HttpEntity<?> httpEntity = new HttpEntity<>(bodyRequest.toString(), httpHeaders);
 
         log.info("POST =====> REQUEST[{}] => data[{}]", url, httpEntity);
-        ResponseEntity<T> response = RestTemplateSingleton.get().postForEntity(url, httpEntity, responseType);
+        ResponseEntity<T> response = AppUtils.restTemplate().postForEntity(url, httpEntity, responseType);
         log.info("POST =====> RESPONSE[{}] => data[{}]", url, response);
 
         return response;

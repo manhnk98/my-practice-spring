@@ -1,5 +1,6 @@
 package com.nkm.mypracticespring.listener.restful;
 
+import com.nkm.mypracticespring.common.context.RestfulCtx;
 import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
 import com.nkm.mypracticespring.enums.ProductTypeEnum;
@@ -19,7 +20,8 @@ public class ProductController {
 
     @PostMapping
     public ResponseDto<?> createProduct(@RequestBody ProductCreateRequest request) {
-        return new ResponseDto<>(productService.createProduct(ProductTypeEnum.get(request.getProductType()), ""));
+        return new ResponseDto<>(productService.createProduct(
+                ProductTypeEnum.get(request.getProductType()), request, RestfulCtx.shopContext().id()));
     }
 
 }

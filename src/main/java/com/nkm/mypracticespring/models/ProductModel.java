@@ -22,14 +22,14 @@ public class ProductModel extends BaseModel {
     @Field("product_description")
     private String productDescription;
 
-//    @Field("product_slug")
-//    private String productSlug;
+    @Field("product_slug")
+    private String productSlug;
 
     @Field("product_price")
     private Double productPrice;
 
-//    @Field("product_quality")
-//    private Integer productQuality;
+    @Field("product_quality")
+    private Integer productQuality;
 
     @Field("product_type")
     private String productType;
@@ -41,22 +41,24 @@ public class ProductModel extends BaseModel {
     @Field("product_attributes")
     private Map<String, Object> productAttributes;
 
-//    @Field("product_ratingsAverage")
-//    private Double productRatingsAverage = 4.5;
+    @Field("product_ratingsAverage")
+    private Double productRatingsAverage = 4.5;
 
-//    @Field("product_variations")
-//    private List<String> productVariations;
+    @Field("product_variations")
+    private List<String> productVariations;
 
-//    @Indexed
-//    @Field("isDraft")
-//    private Boolean isDraft = true;
-//
-//    @Indexed
-//    @Field("isPublished")
-//    private Boolean isPublished = false;
+    @Indexed
+    @Field("isDraft")
+    private Boolean isDraft = true;
 
-//    public void setProductRatingsAverage(Double rating) {
-//        this.productRatingsAverage = Math.round(rating * 10) / 10.0;
-//    }
+    @Indexed
+    @Field("isPublished")
+    private Boolean isPublished = false;
+
+    public void setProductRatingsAverage(Double rating) {
+        if (rating != null) {
+            this.productRatingsAverage = Math.round(rating * 10) / 10.0;
+        }
+    }
 
 }

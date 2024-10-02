@@ -1,6 +1,5 @@
 package com.nkm.mypracticespring.test.main;
 
-import com.nkm.mypracticespring.utils.RestTemplateSingleton;
 import com.nkm.mypracticespring.utils.RestfulUtils;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;

@@ -70,7 +70,6 @@ public class CommonService {
             sessionStatus = this.handleMissingSessionInRedis(sessionId, keySession);
         }
 
-        log.info("sessionStatus: {}", sessionStatus);
         return sessionStatus;
     }
 
