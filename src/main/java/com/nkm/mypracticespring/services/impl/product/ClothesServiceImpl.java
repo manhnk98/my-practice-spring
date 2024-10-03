@@ -23,8 +23,8 @@ public class ClothesServiceImpl extends ProductFactoryService {
     public String createProduct(String shopId, ProductCreateRequest request) {
         ClothesPayload payload = JsonUtils.toObject(request.getProductAttributes(), ClothesPayload.class);
         ClothesModel model = new ClothesModel();
-        model.setCreatedTime(LocalDateTime.now());
-        model.setUpdatedTime(LocalDateTime.now());
+        model.setCreatedAt(LocalDateTime.now());
+        model.setUpdatedAt(LocalDateTime.now());
 
         model.setBrand(payload.getBrand());
         model.setSize(payload.getSize());

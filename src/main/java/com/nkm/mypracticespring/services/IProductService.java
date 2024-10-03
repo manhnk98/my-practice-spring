@@ -9,4 +9,6 @@ public interface IProductService {
 
     void updateProduct(ProductTypeEnum productType, ProductCreateRequest request);
 
+    Object findAllDraftsForShop(String shopId, Integer limit, Integer skip);
+
 }

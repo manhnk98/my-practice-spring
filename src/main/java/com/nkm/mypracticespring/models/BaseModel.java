@@ -11,8 +11,8 @@ public abstract class BaseModel {
     @Id
     private String id;
 
-    private LocalDateTime createdTime;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedTime;
+    private LocalDateTime updatedAt;
 
 }

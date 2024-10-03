@@ -24,8 +24,8 @@ public class ElectronicServiceImpl extends ProductFactoryService {
     public String createProduct(String shopId, ProductCreateRequest request) {
         ElectronicPayload payload = JsonUtils.toObject(request.getProductAttributes(), ElectronicPayload.class);
         ElectronicModel model = new ElectronicModel();
-        model.setCreatedTime(LocalDateTime.now());
-        model.setUpdatedTime(LocalDateTime.now());
+        model.setCreatedAt(LocalDateTime.now());
+        model.setUpdatedAt(LocalDateTime.now());
 
         model.setManufacturer(payload.getManufacturer());
         model.setModel(payload.getModel());

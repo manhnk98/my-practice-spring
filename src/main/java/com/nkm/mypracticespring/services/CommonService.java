@@ -36,8 +36,8 @@ public class CommonService {
         SessionModel sessionModel = new SessionModel();
         sessionModel.setUserId(shopModel.getId());
         sessionModel.setStatus(SessionStatus.ACTIVE);
-        sessionModel.setCreatedTime(now);
-        sessionModel.setUpdatedTime(now);
+        sessionModel.setCreatedAt(now);
+        sessionModel.setUpdatedAt(now);
         sessionModel.setExpireTime(now.plus(Constant.REFRESH_TOKEN_EXPIRE_TIME.toMillis(), ChronoUnit.MILLIS));
         ISessionRepository.save(sessionModel);
 

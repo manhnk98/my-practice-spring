@@ -6,10 +6,7 @@ import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
 import com.nkm.mypracticespring.enums.ProductTypeEnum;
 import com.nkm.mypracticespring.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/api/product")
@@ -22,6 +19,12 @@ public class ProductController {
     public ResponseDto<?> createProduct(@RequestBody ProductCreateRequest request) {
         return new ResponseDto<>(productService.createProduct(
                 ProductTypeEnum.get(request.getProductType()), request, RestfulCtx.shopContext().id()));
+    }
+
+    @GetMapping("/drafts/all")
+    public ResponseDto<?> getAllDraftsForShop(@RequestParam(name = "limit", required = false, defaultValue = "0") Integer limit,
+                                              @RequestParam(name = "skip", required = false, defaultValue = "0") Integer page) {
+        return new ResponseDto<>(productService.findAllDraftsForShop(RestfulCtx.shopContext().id(), limit, page));
     }
 
 }

@@ -24,8 +24,8 @@ public class FurnitureServiceImpl extends ProductFactoryService {
     public String createProduct(String shopId, ProductCreateRequest request) {
         FurniturePayload payload = JsonUtils.toObject(request.getProductAttributes(), FurniturePayload.class);
         FurnitureModel model = new FurnitureModel();
-        model.setCreatedTime(LocalDateTime.now());
-        model.setUpdatedTime(LocalDateTime.now());
+        model.setCreatedAt(LocalDateTime.now());
+        model.setUpdatedAt(LocalDateTime.now());
 
         model.setBrand(payload.getBrand());
         model.setSize(payload.getSize());

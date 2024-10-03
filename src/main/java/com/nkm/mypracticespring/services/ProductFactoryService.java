@@ -22,8 +22,8 @@ public abstract class ProductFactoryService {
     public String createProduct(ProductCreateRequest request, String shopId, String productId) {
         ProductModel product = new ProductModel();
         product.setId(productId);
-        product.setCreatedTime(LocalDateTime.now());
-        product.setUpdatedTime(LocalDateTime.now());
+        product.setCreatedAt(LocalDateTime.now());
+        product.setUpdatedAt(LocalDateTime.now());
 
         product.setProductName(request.getProductName());
         product.setProductThumb(request.getProductThumb());

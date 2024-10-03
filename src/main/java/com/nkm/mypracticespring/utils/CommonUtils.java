@@ -1,5 +1,7 @@
 package com.nkm.mypracticespring.utils;
 
+import com.github.slugify.Slugify;
+
 import java.math.BigDecimal;
 
 public class CommonUtils {
@@ -23,6 +25,14 @@ public class CommonUtils {
         }
         BigDecimal bd = new BigDecimal(input);
         return bd.scale() <= 0 || bd.stripTrailingZeros().scale() <= 0;
+    }
+
+    public static String toSlug(String str) {
+        if (str == null || str.isEmpty()) {
+            return "";
+        }
+
+        return Slugify.builder().build().slugify(str.toLowerCase());
     }
 
 }
