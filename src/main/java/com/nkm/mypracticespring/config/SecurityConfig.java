@@ -1,5 +1,6 @@
 package com.nkm.mypracticespring.config;
 
+import com.nkm.mypracticespring.security.custom.FakeDaoAuthenticationProvider;
 import com.nkm.mypracticespring.security.exception_handler.ApiAccessDeniedHandler;
 import com.nkm.mypracticespring.security.exception_handler.ApiAuthenticationEntryPoint;
 import com.nkm.mypracticespring.security.filter.JwtAuthenticationFilter;
@@ -52,6 +53,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public FakeDaoAuthenticationProvider fakeDaoAuthenticationProvider() {
+        return new FakeDaoAuthenticationProvider(passwordEncoder());
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
@@ -87,6 +93,7 @@ public class SecurityConfig {
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authenticationProvider(authenticationProvider());
+//        http.authenticationProvider(fakeDaoAuthenticationProvider());
         http.addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 

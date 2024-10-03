@@ -2,6 +2,7 @@ package com.nkm.mypracticespring.common.context;
 
 import com.nkm.mypracticespring.common.Constant;
 import com.nkm.mypracticespring.dto.access.ShopInfo;
+import com.nkm.mypracticespring.exceptions.AuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.context.request.RequestAttributes;
@@ -23,10 +24,11 @@ public class RestfulCtx {
 
     public static ShopInfo shopContext() {
         HttpServletRequest request = getCurrentHttpRequest();
-        if (request != null) {
-            return (ShopInfo) request.getAttribute(Constant.SHOP_CONTEXT);
+        if (request == null || request.getAttribute(Constant.SHOP_CONTEXT) == null) {
+            throw new AuthenticationException("");
         }
-        return null;
+
+        return (ShopInfo) request.getAttribute(Constant.SHOP_CONTEXT);
     }
 
     public static String getSessionRequest() {
