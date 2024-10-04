@@ -9,7 +9,10 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com.nkm.mypracticespring.repositories")
+@EnableMongoRepositories(
+        basePackages = {"com.nkm.mypracticespring.repositories"},
+        repositoryImplementationPostfix = "CustomImpl"
+)
 public class MongoConfig {
 
     @Bean

@@ -48,11 +48,11 @@ public class ProductModel extends BaseModel {
     private List<String> productVariations;
 
     @Indexed
-    @Field("isDraft")
+    @Field("is_draft")
     private Boolean isDraft = true;
 
     @Indexed
-    @Field("isPublished")
+    @Field("is_published")
     private Boolean isPublished = false;
 
     public void setProductRatingsAverage(Double rating) {
