@@ -42,7 +42,7 @@ public abstract class ProductFactoryService {
         product.setProductVariations(request.getProductVariations());
 
         productRepository.save(product);
-        return null;
+        return product.getId();
     }
 
 }

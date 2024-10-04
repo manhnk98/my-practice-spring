@@ -3,5 +3,7 @@ spring:
     name: my-practice-spring
 logging:
   config: classpath:log4j2.xml
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 server:
   port: 8080

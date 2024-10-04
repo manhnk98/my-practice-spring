@@ -57,17 +57,17 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Object findAllDraftsForShop(String shopId, Integer limit, Integer skip) {
 
-        Query query = new Query();
-        query.addCriteria(Criteria.where("product_shop.$id").is(new ObjectId(shopId)));
-        query.addCriteria(Criteria.where("is_draft").is(true));
+//        Query query = new Query();
+//        query.addCriteria(Criteria.where("product_shop.$id").is(new ObjectId(shopId)));
+//        query.addCriteria(Criteria.where("is_draft").is(true));
+//
+//        query.with(Sort.by(Sort.Direction.DESC, "updatedAt"))
+//                .skip(skip)
+//                .limit(limit);
+//
+//        List<ProductModel> lstRs = mongoTemplate.find(query, ProductModel.class);
+//        return lstRs;
 
-        query.with(Sort.by(Sort.Direction.DESC, "updatedAt"))
-                .skip(skip)
-                .limit(limit);
-
-        List<ProductModel> lstRs = mongoTemplate.find(query, ProductModel.class);
-        return lstRs;
-
-//        return productRepository.getAllDraftsForShop(shopId, limit, skip);
+        return productRepository.getAllDraftsForShop(shopId, limit, skip);
     }
 }

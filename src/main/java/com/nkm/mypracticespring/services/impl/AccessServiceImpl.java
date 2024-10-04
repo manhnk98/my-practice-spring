@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,8 @@ public class AccessServiceImpl implements IAccessService {
         newShop.setEmail(signupReq.getEmail());
         newShop.setPassword(passwordHash);
         newShop.setRoles(List.of(RoleShop.SHOP.name()));
+        newShop.setCreatedAt(LocalDateTime.now());
+        newShop.setUpdatedAt(LocalDateTime.now());
         IShopRepository.save(newShop);
 
         ShopInfo shopInfo = new ShopInfo(newShop.getId(), newShop.getName(), newShop.getEmail());
