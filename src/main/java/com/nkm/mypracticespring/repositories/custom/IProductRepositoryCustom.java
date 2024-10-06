@@ -1,9 +1,12 @@
 package com.nkm.mypracticespring.repositories.custom;
 
 import com.nkm.mypracticespring.models.ProductModel;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IProductRepositoryCustom {
-    List<ProductModel> getAllDraftsForShop(String shopId, int limit, int skip);
+
+    Page<ProductModel> getAllDraftsForShop(String shopId, Pageable pageable);
+
+    Page<ProductModel> getAllPublishedForShop(String shopId, Pageable pageable);
 }

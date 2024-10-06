@@ -22,9 +22,20 @@ public class ProductController {
     }
 
     @GetMapping("/drafts/all")
-    public ResponseDto<?> getAllDraftsForShop(@RequestParam(name = "limit", required = false, defaultValue = "0") Integer limit,
-                                              @RequestParam(name = "skip", required = false, defaultValue = "0") Integer page) {
-        return new ResponseDto<>(productService.findAllDraftsForShop(RestfulCtx.shopContext().id(), limit, page));
+    public ResponseDto<?> getAllDraftsForShop(@RequestParam(name = "page", required = false, defaultValue = "50") Integer page,
+                                              @RequestParam(name = "size", required = false, defaultValue = "0") Integer size) {
+        return new ResponseDto<>(productService.findAllDraftsForShop(RestfulCtx.shopContext().id(), page, size));
+    }
+
+    @PutMapping("/publish/{productId}")
+    public ResponseDto<?> publishProduct(@PathVariable("productId") String productId) {
+        return new ResponseDto<>(productService.publishProduct(productId, RestfulCtx.shopContext().id()));
+    }
+
+    @GetMapping("/published/all")
+    public ResponseDto<?> getAllPublishedForShop(@RequestParam(name = "limit", required = false, defaultValue = "50") Integer limit,
+                                                 @RequestParam(name = "skip", required = false, defaultValue = "0") Integer skip) {
+        return new ResponseDto<>(productService.getAllPublishedForShop(RestfulCtx.shopContext().id(), limit, skip));
     }
 
 }
