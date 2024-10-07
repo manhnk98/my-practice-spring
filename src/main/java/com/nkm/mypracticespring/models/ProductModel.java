@@ -13,12 +13,14 @@ import java.util.Map;
 @Document(collection = "products")
 public class ProductModel extends BaseModel {
 
+    @Indexed
     @Field("product_name")
     private String productName;
 
     @Field("product_thumb")
     private String productThumb;
 
+    @Indexed
     @Field("product_description")
     private String productDescription;
 

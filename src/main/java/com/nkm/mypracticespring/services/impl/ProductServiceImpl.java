@@ -5,7 +5,7 @@ import com.nkm.mypracticespring.enums.ProductTypeEnum;
 import com.nkm.mypracticespring.exceptions.AppException;
 import com.nkm.mypracticespring.models.ProductModel;
 import com.nkm.mypracticespring.models.ShopModel;
-import com.nkm.mypracticespring.repositories.IProductRepository;
+import com.nkm.mypracticespring.repositories.ProductRepository;
 import com.nkm.mypracticespring.services.IProductService;
 import com.nkm.mypracticespring.services.ProductFactoryService;
 import com.nkm.mypracticespring.services.impl.product.ClothesServiceImpl;
@@ -13,11 +13,13 @@ import com.nkm.mypracticespring.services.impl.product.ElectronicServiceImpl;
 import com.nkm.mypracticespring.services.impl.product.FurnitureServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -27,7 +29,7 @@ import java.util.Optional;
 public class ProductServiceImpl implements IProductService {
 
     @Autowired
-    private IProductRepository productRepository;
+    private ProductRepository productRepository;
 
     private static final Map<ProductTypeEnum, ProductFactoryService> PRODUCT_FACTORY_REGISTRY = new HashMap<>();
 
@@ -52,10 +54,19 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Object findAllDraftsForShop(String shopId, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "updated_at");
+    public Page<ProductModel> searchProduct(String shopId, String keySearch, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "score");
+        return productRepository.searchProduct(keySearch, pageable);
+    }
 
-        return productRepository.getAllDraftsForShop(shopId, pageable);
+    @Override
+    public Page<ProductModel> findAllDraftsForShop(String shopId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "updated_at");
+        ShopModel shopModel = new ShopModel();
+        shopModel.setId(shopId);
+
+        return productRepository.findAllByProductShopAndIsDraftIsTrue(shopModel, pageable);
+//        return productRepository.getAllDraftsForShop(shopId, pageable);
     }
 
     @Override
@@ -71,15 +82,38 @@ public class ProductServiceImpl implements IProductService {
         ProductModel product = productModel.get();
         product.setIsDraft(false);
         product.setIsPublished(true);
+        product.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product);
 
         return product;
     }
 
     @Override
-    public Object getAllPublishedForShop(String shopId, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "updated_at");
+    public Object unpublishProduct(String productId, String shopId) {
+        ShopModel shopModel = new ShopModel();
+        shopModel.setId(shopId);
 
-        return productRepository.getAllPublishedForShop(shopId, pageable);
+        Optional<ProductModel> productModel = productRepository.findByIdAndProductShop(productId, shopModel);
+        if (productModel.isEmpty()) {
+            throw new AppException("Not found product");
+        }
+
+        ProductModel product = productModel.get();
+        product.setIsDraft(true);
+        product.setIsPublished(false);
+        product.setUpdatedAt(LocalDateTime.now());
+        productRepository.save(product);
+
+        return product;
+    }
+
+    @Override
+    public Page<ProductModel> getAllPublishedForShop(String shopId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "updated_at");
+        ShopModel shopModel = new ShopModel();
+        shopModel.setId(shopId);
+
+        return productRepository.findAllByProductShopAndIsPublishedIsTrue(shopModel, pageable);
+//        return productRepository.getAllPublishedForShop(shopId, pageable);
     }
 }
