@@ -2,6 +2,7 @@ package com.nkm.mypracticespring.models;
 
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,14 +14,14 @@ import java.util.Map;
 @Document(collection = "products")
 public class ProductModel extends BaseModel {
 
-    @Indexed
+    @TextIndexed
     @Field("product_name")
     private String productName;
 
     @Field("product_thumb")
     private String productThumb;
 
-    @Indexed
+    @TextIndexed
     @Field("product_description")
     private String productDescription;
 

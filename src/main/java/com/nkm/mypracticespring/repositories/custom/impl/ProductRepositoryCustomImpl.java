@@ -65,6 +65,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     @Override
     public Page<ProductModel> searchProduct(String keySearch, Pageable pageable) {
+        // create index truoc khi chay : db.products.createIndex({ product_name: "text", product_description: "text" });
         TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(keySearch);
         Query query = TextQuery.queryText(criteria).with(pageable);
         query.addCriteria(Criteria.where("is_published").is(true));
@@ -72,21 +73,6 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
         List<ProductModel> products = mongoTemplate.find(query, ProductModel.class);
         long total = mongoTemplate.count(query, ProductModel.class);
-
-//        String regexSearch = ".*" + keySearch + ".*";
-//        Query query = new Query();
-//        query.addCriteria(Criteria.where("is_published").is(true));
-//        query.addCriteria(new Criteria().orOperator(
-//                Criteria.where("product_name").regex(regexSearch, "i"), // i -> khong phan biet chu Hoa/Thuong
-//                Criteria.where("product_thumb").regex(regexSearch, "i"),
-//                Criteria.where("product_description").regex(regexSearch, "i")
-//        ));
-//
-//        query.with(Sort.by(Sort.Order.desc("score")));
-//        query.with(pageable);
-//
-//        List<ProductModel> products = mongoTemplate.find(query, ProductModel.class);
-//        long total = mongoTemplate.count(query.skip(-1).limit(-1), ProductModel.class);
 
         return new PageImpl<>(products, pageable, total);
     }
