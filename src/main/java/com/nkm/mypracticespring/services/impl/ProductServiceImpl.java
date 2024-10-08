@@ -20,9 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Log4j2
 @Service
@@ -51,6 +49,24 @@ public class ProductServiceImpl implements IProductService {
     public void updateProduct(ProductTypeEnum productType, ProductCreateRequest request) {
         ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
         productFactory.updateProduct("", request);
+    }
+
+    @Override
+    public ProductModel findOneProduct(String shopId, String productId) {
+//        ShopModel shopModel = new ShopModel();
+//        shopModel.setId(shopId);
+//        return productRepository.findByIdAndProductShop(productId, shopModel).orElse(null);
+
+        List<String> fieldsToExclude = List.of("__v", "variations");
+        return productRepository.findOneProduct(shopId, productId, fieldsToExclude);
+    }
+
+    @Override
+    public Page<ProductModel> findAllProducts(String shopId, Integer page, Integer size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("ctime".equals(sort) ? Sort.Direction.DESC : Sort.Direction.ASC, "_id"));
+        List<String> fieldsSelect = List.of("product_name", "product_price", "product_thumb", "product_shop");
+
+        return productRepository.findAllProducts(shopId, fieldsSelect, pageable);
     }
 
     @Override

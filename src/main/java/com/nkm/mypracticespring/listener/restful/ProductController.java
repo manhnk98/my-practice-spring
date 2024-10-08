@@ -24,10 +24,28 @@ public class ProductController {
                 ProductTypeEnum.get(request.getProductType()), request, RestfulCtx.shopContext().id()));
     }
 
+    @GetMapping
+    public ResponseDto<?> findAllProducts(@RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+                                          @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+                                          @RequestParam(name = "sort", required = false, defaultValue = "ctime") String sort) {
+        Page<ProductModel> pageProduct = productService.findAllProducts(RestfulCtx.shopContext().id(), page, size, sort);
+        ResponseList<?> response = new ResponseList<>(pageProduct.getContent(), page, size,
+                pageProduct.getTotalPages(), pageProduct.getTotalElements());
+
+        return new ResponseDto<>(response);
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseDto<?> findProduct(@PathVariable("productId") String productId) {
+        ProductModel response = productService.findOneProduct(RestfulCtx.shopContext().id(), productId);
+
+        return new ResponseDto<>(response);
+    }
+
     @GetMapping("/search")
     public ResponseDto<?> searchProducts(@RequestParam("keySearch") String keySearch,
-                                         @RequestParam(required = false) Integer page,
-                                         @RequestParam(required = false) Integer size) {
+                                         @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+                                         @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         Page<ProductModel> pageProduct = productService.searchProduct(RestfulCtx.shopContext().id(), keySearch, page, size);
         ResponseList<?> response = new ResponseList<>(pageProduct.getContent(), page, size,
                 pageProduct.getTotalPages(), pageProduct.getTotalElements());

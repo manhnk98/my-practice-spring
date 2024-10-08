@@ -11,6 +11,10 @@ public interface IProductService {
 
     void updateProduct(ProductTypeEnum productType, ProductCreateRequest request);
 
+    ProductModel findOneProduct(String shopId, String productId);
+
+    Page<ProductModel> findAllProducts(String shopId, Integer page, Integer size, String sort);
+
     Page<ProductModel> searchProduct(String shopId, String keySearch, Integer page, Integer size);
 
     Page<ProductModel> findAllDraftsForShop(String shopId, Integer page, Integer size);
