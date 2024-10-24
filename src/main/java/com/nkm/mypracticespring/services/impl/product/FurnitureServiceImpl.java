@@ -2,6 +2,7 @@ package com.nkm.mypracticespring.services.impl.product;
 
 import com.nkm.mypracticespring.dto.product.FurniturePayload;
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
+import com.nkm.mypracticespring.dto.product.ProductUpdateRequest;
 import com.nkm.mypracticespring.models.FurnitureModel;
 import com.nkm.mypracticespring.repositories.IFurnitureRepository;
 import com.nkm.mypracticespring.services.ProductFactoryService;
@@ -36,7 +37,7 @@ public class FurnitureServiceImpl extends ProductFactoryService {
     }
 
     @Override
-    public void updateProduct(String productId, ProductCreateRequest request) {
+    public void updateProduct(String shopId, String productId, ProductUpdateRequest request) {
 
     }
 }

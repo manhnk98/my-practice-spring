@@ -1,6 +1,7 @@
 package com.nkm.mypracticespring.services;
 
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
+import com.nkm.mypracticespring.dto.product.ProductUpdateRequest;
 import com.nkm.mypracticespring.models.ProductModel;
 import com.nkm.mypracticespring.models.ShopModel;
 import com.nkm.mypracticespring.repositories.ProductRepository;
@@ -17,7 +18,7 @@ public abstract class ProductFactoryService {
 
     public abstract String createProduct(String shopId, ProductCreateRequest request);
 
-    public abstract void updateProduct(String productId, ProductCreateRequest request);
+    public abstract void updateProduct(String shopId, String productId, ProductUpdateRequest request);
 
     public String createProduct(ProductCreateRequest request, String shopId, String productId) {
         ProductModel product = new ProductModel();
@@ -43,6 +44,10 @@ public abstract class ProductFactoryService {
 
         productRepository.save(product);
         return product.getId();
+    }
+
+    public void updateProduct(String productId, Object bodyUpdate) {
+
     }
 
 }

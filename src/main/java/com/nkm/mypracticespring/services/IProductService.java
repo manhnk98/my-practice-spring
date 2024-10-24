@@ -1,6 +1,7 @@
 package com.nkm.mypracticespring.services;
 
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
+import com.nkm.mypracticespring.dto.product.ProductUpdateRequest;
 import com.nkm.mypracticespring.enums.ProductTypeEnum;
 import com.nkm.mypracticespring.models.ProductModel;
 import org.springframework.data.domain.Page;
@@ -9,7 +10,7 @@ public interface IProductService {
 
     String createProduct(ProductTypeEnum productType, ProductCreateRequest request, String shopId);
 
-    void updateProduct(ProductTypeEnum productType, ProductCreateRequest request);
+    void updateProduct(String productId, ProductTypeEnum productType, ProductUpdateRequest request, String shopId);
 
     ProductModel findOneProduct(String shopId, String productId);
 

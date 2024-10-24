@@ -2,6 +2,7 @@ package com.nkm.mypracticespring.services.impl.product;
 
 import com.nkm.mypracticespring.dto.product.ClothesPayload;
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
+import com.nkm.mypracticespring.dto.product.ProductUpdateRequest;
 import com.nkm.mypracticespring.models.ClothesModel;
 import com.nkm.mypracticespring.repositories.IClothesRepository;
 import com.nkm.mypracticespring.services.ProductFactoryService;
@@ -26,6 +27,7 @@ public class ClothesServiceImpl extends ProductFactoryService {
         model.setCreatedAt(LocalDateTime.now());
         model.setUpdatedAt(LocalDateTime.now());
 
+        assert payload != null;
         model.setBrand(payload.getBrand());
         model.setSize(payload.getSize());
         model.setMaterial(payload.getMaterial());
@@ -35,7 +37,10 @@ public class ClothesServiceImpl extends ProductFactoryService {
     }
 
     @Override
-    public void updateProduct(String productId, ProductCreateRequest request) {
+    public void updateProduct(String shopId, String productId, ProductUpdateRequest request) {
+        if (request.getProductAttributes() != null && !request.getProductAttributes().isEmpty()) {
+            // update product by id
 
+        }
     }
 }

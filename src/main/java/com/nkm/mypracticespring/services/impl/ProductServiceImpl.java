@@ -1,6 +1,7 @@
 package com.nkm.mypracticespring.services.impl;
 
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
+import com.nkm.mypracticespring.dto.product.ProductUpdateRequest;
 import com.nkm.mypracticespring.enums.ProductTypeEnum;
 import com.nkm.mypracticespring.exceptions.AppException;
 import com.nkm.mypracticespring.models.ProductModel;
@@ -29,26 +30,29 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    private static final Map<ProductTypeEnum, ProductFactoryService> PRODUCT_FACTORY_REGISTRY = new HashMap<>();
+    private static final Map<ProductTypeEnum, ProductFactoryService> PRODUCT_FACTORY_REGISTER = new HashMap<>();
 
     public ProductServiceImpl(ClothesServiceImpl clothesService,
                               ElectronicServiceImpl electronicService,
                               FurnitureServiceImpl furnitureService) {
-        PRODUCT_FACTORY_REGISTRY.put(ProductTypeEnum.Clothes, clothesService);
-        PRODUCT_FACTORY_REGISTRY.put(ProductTypeEnum.Electronic, electronicService);
-        PRODUCT_FACTORY_REGISTRY.put(ProductTypeEnum.Furniture, furnitureService);
+        PRODUCT_FACTORY_REGISTER.put(ProductTypeEnum.Clothes, clothesService);
+        PRODUCT_FACTORY_REGISTER.put(ProductTypeEnum.Electronic, electronicService);
+        PRODUCT_FACTORY_REGISTER.put(ProductTypeEnum.Furniture, furnitureService);
     }
 
     @Override
     public String createProduct(ProductTypeEnum productType, ProductCreateRequest request, String shopId) {
-        ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
+        ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTER.get(productType);
         return productFactory.createProduct(shopId, request);
     }
 
     @Override
-    public void updateProduct(ProductTypeEnum productType, ProductCreateRequest request) {
-        ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTRY.get(productType);
-        productFactory.updateProduct("", request);
+    public void updateProduct(String productId, ProductTypeEnum productType, ProductUpdateRequest request, String shopId) {
+        ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTER.get(productType);
+        if (productFactory == null) {
+            throw new AppException("Invalid product Types: " + productType);
+        }
+        productFactory.updateProduct(shopId, productId, request);
     }
 
     @Override
