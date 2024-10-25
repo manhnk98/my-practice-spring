@@ -54,6 +54,9 @@ public class ProductModel extends BaseModel {
     @Field("is_draft")
     private Boolean isDraft = true;
 
+    @Field("is_new")
+    private Boolean isNew = true;
+
     @Indexed
     @Field("is_published")
     private Boolean isPublished = false;

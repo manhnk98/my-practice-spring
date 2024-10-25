@@ -47,12 +47,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void updateProduct(String productId, ProductTypeEnum productType, ProductUpdateRequest request, String shopId) {
+    public ProductModel updateProduct(String productId, ProductTypeEnum productType, ProductUpdateRequest request, String shopId) {
         ProductFactoryService productFactory = PRODUCT_FACTORY_REGISTER.get(productType);
         if (productFactory == null) {
             throw new AppException("Invalid product Types: " + productType);
         }
-        productFactory.updateProduct(shopId, productId, request);
+        return productFactory.updateProduct(shopId, productId, request);
     }
 
     @Override

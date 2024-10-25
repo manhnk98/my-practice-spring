@@ -5,6 +5,7 @@ import com.nkm.mypracticespring.dto.common.ResponseDto;
 import com.nkm.mypracticespring.dto.common.ResponseList;
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
 import com.nkm.mypracticespring.dto.product.ProductUpdateRequest;
+import com.nkm.mypracticespring.enums.MessageEnum;
 import com.nkm.mypracticespring.enums.ProductTypeEnum;
 import com.nkm.mypracticespring.models.ProductModel;
 import com.nkm.mypracticespring.services.IProductService;
@@ -27,8 +28,7 @@ public class ProductController {
 
     @PatchMapping("/{productId}")
     public ResponseDto<?> updateProduct(@PathVariable("productId") String productId, @RequestBody ProductUpdateRequest request) {
-        productService.updateProduct(productId, ProductTypeEnum.get(request.getProductType()), request, RestfulCtx.shopContext().id());
-        return new ResponseDto<>("Update product success");
+        return new ResponseDto<>(productService.updateProduct(productId, ProductTypeEnum.get(request.getProductType()), request, RestfulCtx.shopContext().id()), MessageEnum.SUCCESS);
     }
 
     @GetMapping

@@ -3,7 +3,10 @@ package com.nkm.mypracticespring.services.impl.product;
 import com.nkm.mypracticespring.dto.product.ClothesPayload;
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
 import com.nkm.mypracticespring.dto.product.ProductUpdateRequest;
+import com.nkm.mypracticespring.exceptions.AppException;
 import com.nkm.mypracticespring.models.ClothesModel;
+import com.nkm.mypracticespring.models.ProductModel;
+import com.nkm.mypracticespring.models.ShopModel;
 import com.nkm.mypracticespring.repositories.IClothesRepository;
 import com.nkm.mypracticespring.services.ProductFactoryService;
 import com.nkm.mypracticespring.utils.JsonUtils;
@@ -27,6 +30,10 @@ public class ClothesServiceImpl extends ProductFactoryService {
         model.setCreatedAt(LocalDateTime.now());
         model.setUpdatedAt(LocalDateTime.now());
 
+        ShopModel shopModel = new ShopModel();
+        shopModel.setId(shopId);
+        model.setProductShop(shopModel);
+
         assert payload != null;
         model.setBrand(payload.getBrand());
         model.setSize(payload.getSize());
@@ -37,10 +44,24 @@ public class ClothesServiceImpl extends ProductFactoryService {
     }
 
     @Override
-    public void updateProduct(String shopId, String productId, ProductUpdateRequest request) {
-        if (request.getProductAttributes() != null && !request.getProductAttributes().isEmpty()) {
-            // update product by id
-
+    public ProductModel updateProduct(String shopId, String productId, ProductUpdateRequest request) {
+        ShopModel shopModel = new ShopModel();
+        shopModel.setId(shopId);
+        ClothesModel model = clothesRepository.findFirstByIdAndProductShop(productId, shopModel);
+        if (model == null) {
+            throw new AppException("product not found");
         }
+
+        if (request.getProductAttributes() != null && !request.getProductAttributes().isEmpty()) {
+            ClothesPayload payload = JsonUtils.toObject(request.getProductAttributes(), ClothesPayload.class);
+            if (payload != null) {
+                model.setBrand(payload.getBrand());
+                model.setSize(payload.getSize());
+                model.setMaterial(payload.getMaterial());
+                model.setUpdatedAt(LocalDateTime.now());
+                clothesRepository.save(model);
+            }
+        }
+        return super.update(shopId, productId, request);
     }
 }

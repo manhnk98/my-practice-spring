@@ -2,6 +2,7 @@ package com.nkm.mypracticespring.services;
 
 import com.nkm.mypracticespring.dto.product.ProductCreateRequest;
 import com.nkm.mypracticespring.dto.product.ProductUpdateRequest;
+import com.nkm.mypracticespring.exceptions.AppException;
 import com.nkm.mypracticespring.models.ProductModel;
 import com.nkm.mypracticespring.models.ShopModel;
 import com.nkm.mypracticespring.repositories.ProductRepository;
@@ -18,7 +19,7 @@ public abstract class ProductFactoryService {
 
     public abstract String createProduct(String shopId, ProductCreateRequest request);
 
-    public abstract void updateProduct(String shopId, String productId, ProductUpdateRequest request);
+    public abstract ProductModel updateProduct(String shopId, String productId, ProductUpdateRequest request);
 
     public String createProduct(ProductCreateRequest request, String shopId, String productId) {
         ProductModel product = new ProductModel();
@@ -46,8 +47,25 @@ public abstract class ProductFactoryService {
         return product.getId();
     }
 
-    public void updateProduct(String productId, Object bodyUpdate) {
+    public ProductModel update(String shopId, String productId, ProductUpdateRequest request) {
+        ShopModel shopModel = new ShopModel();
+        shopModel.setId(shopId);
+        ProductModel product = productRepository.findByIdAndProductShop(productId, shopModel).orElse(null);
+        if (product == null) {
+            throw new AppException("product not found");
+        }
 
+        product.setUpdatedAt(LocalDateTime.now());
+        product.setProductName(request.getProductName());
+        product.setProductThumb(request.getProductThumb());
+        product.setProductDescription(request.getProductDescription());
+        product.setProductSlug(request.getProductSlug());
+        product.setProductPrice(request.getProductPrice());
+        product.setProductQuality(request.getProductQuality());
+        product.setProductType(request.getProductType());
+        product.setProductAttributes(request.getProductAttributes());
+
+        return productRepository.save(product);
     }
 
 }

@@ -10,7 +10,7 @@ public interface IProductService {
 
     String createProduct(ProductTypeEnum productType, ProductCreateRequest request, String shopId);
 
-    void updateProduct(String productId, ProductTypeEnum productType, ProductUpdateRequest request, String shopId);
+    ProductModel updateProduct(String productId, ProductTypeEnum productType, ProductUpdateRequest request, String shopId);
 
     ProductModel findOneProduct(String shopId, String productId);
 
