@@ -34,7 +34,8 @@ public class SecurityConfig {
             "/v1/api/access/login",
             "/v1/api/access/signup",
             "/v1/api/access/refresh-token",
-            "/test/**"
+            "/test/**",
+            "/actuator/**"
     };
 
     @Autowired

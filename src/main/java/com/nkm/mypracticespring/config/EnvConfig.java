@@ -53,7 +53,7 @@ public class EnvConfig {
         MONGODB_PORT = Integer.parseInt(getValue("MONGODB_PORT", "27017"));
         MONGODB_DATABASE_NAME = getValue("MONGODB_DATABASE_NAME", "e-commerce");
 
-        JWT_SECRET = getValue("JWT_SECRET", "5pAq6zRyX8bC3dV2wS7gN1mK9jF0hL4tUoP6iBvE3nG8xZaQrY7cW2fA");
+        JWT_SECRET = getValue("JWT_SECRET", "5pAq6zRyX8bC3dV2wS7gN1mK9jF0hL4tUoP6iBvE3nG8xZaQrY7cW2fA1998ManhNK");
     }
 
     private static String getValue(String key, String defaultValue) {
